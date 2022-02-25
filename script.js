@@ -55,7 +55,9 @@ function main() {
     // Unbind the buffer
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
-    const vert = `attribute vec3 a_pos;
+    const vert = `
+    attribute vec3 a_pos;
+    uniform mat3 u_proj_mat;
 
     void main() {
       gl_Position = vec4(a_pos,1);
