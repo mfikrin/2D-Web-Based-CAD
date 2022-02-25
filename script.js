@@ -10,8 +10,8 @@ function main() {
 
   
     const canvas = document.querySelector("#glCanvas");
-    canvas.width = 850;
-    canvas.height = 500;
+    canvas.width = 550;
+    canvas.height = 550;
 
     // Initialize the GL context
     const gl = canvas.getContext("webgl");
@@ -23,10 +23,10 @@ function main() {
     }
   
     const rectangleData = [
-      -0.8,0.5,0.0,
-      -0.8,-0.5,0.0,
-      0.8,-0.5,0.0,
-      0.8,0.5,0.0 
+      -0.25,0.5,0.0,
+      -0.25,-0.5,0.0,
+      0.25,-0.5,0.0,
+      0.25,0.5,0.0 
     ]
 
     indices = [3,2,1,3,1,0];
@@ -97,7 +97,7 @@ function main() {
     gl.vertexAttribPointer(vertexPos, 3, gl.FLOAT, false, 0, 0)
 
     const uniformCol = gl.getUniformLocation(shaderProgram, 'u_fragColor')
-    gl.uniform4fv(uniformCol, [1.0, 0.0, 0.0, 1.0])
+    gl.uniform4fv(uniformCol, [1.0, 0.0, 0.0, 0.5])
 
     
     // Activate the vertex shader attribute to access the buffer object in a vertex shader
@@ -109,18 +109,6 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.drawElements(gl.TRIANGLES, indices.length,gl.UNSIGNED_SHORT,0)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   }
