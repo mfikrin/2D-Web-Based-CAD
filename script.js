@@ -1,19 +1,20 @@
 
+
 function loadfile(filename)
  {
   const file = filename;
   console.log(file);
  }
 
-import { rectangle, rectangle } from './Object/glObject';
- import {initShaderProgram} from './shader'
+// import { rectangle, rectangle } from './Object/glObject';
+//  import {initShaderProgram} from './shader'
 
 function main() {
 
   
     const canvas = document.querySelector("#glCanvas");
-    canvas.width = 550;
-    canvas.height = 550;
+    canvas.width = 350;
+    canvas.height = 350;
 
     // Initialize the GL context
     const gl = canvas.getContext("webgl");
@@ -23,6 +24,11 @@ function main() {
       alert("Unable to initialize WebGL. Your browser or machine may not support it.");
       return;
     }
+
+      // Set clear color to black, fully opaque
+      gl.clearColor(0.0, 0.0, 0.0, 0.5);
+      // Clear the color buffer with specified clear color
+      gl.clear(gl.COLOR_BUFFER_BIT);
 
     const vert = `
     attribute vec2 a_pos;
@@ -43,7 +49,7 @@ function main() {
 
     const shaderProgram = initShaderProgram(gl, vert, frag);
 
-    // gl.useProgram(shaderProgram) // always use the program on the beginning
+    gl.useProgram(shaderProgram) // always use the program on the beginning
 
 
 
@@ -59,6 +65,11 @@ function main() {
     // indices = [3,2,1,3,1,0];
     
     var rectangle = rectangle(1,shaderProgram,gl)
+    rectangle.setVertexArray(rectangleData)
+    rectangle.bind()
+    rectange.draw()
+
+
 
     console.log(rectangle.getDrawType())
 
@@ -81,10 +92,7 @@ function main() {
     // // Activate the vertex shader attribute to access the buffer object in a vertex shader
     // gl.enableVertexAttribArray(vertexPos) 
 
-    // // Set clear color to black, fully opaque
-    // gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    // // Clear the color buffer with specified clear color
-    // gl.clear(gl.COLOR_BUFFER_BIT);
+  
 
     // gl.drawElements(gl.TRIANGLES, indices.length,gl.UNSIGNED_SHORT,0)
 

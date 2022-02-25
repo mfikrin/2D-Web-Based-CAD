@@ -82,7 +82,9 @@ class square extends glObject{
 }
 
 class rectangle extends glObject{
-    
+    constructor(id, shader, gl){
+        super(id, shader, gl)
+    }    
     getDrawType() {
         return this.gl.TRIANGLE_FAN;
       }
