@@ -1,4 +1,4 @@
-export class glObject{
+class glObject{
     
     constructor(id, shader, gl){
         this.id = id
@@ -78,6 +78,17 @@ class square extends glObject{
     
     getObjectType(){
         return "square";
+    }
+}
+
+class rectangle extends glObject{
+    
+    getDrawType() {
+        return this.gl.TRIANGLE_FAN;
+      }
+    
+    getObjectType(){
+        return "rectangle";
     }
 }
 

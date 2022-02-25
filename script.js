@@ -5,6 +5,8 @@ function loadfile(filename)
   console.log(file);
  }
 
+import { rectangle, rectangle } from './Object/glObject';
+ import {initShaderProgram} from './shader'
 
 function main() {
 
@@ -21,47 +23,16 @@ function main() {
       alert("Unable to initialize WebGL. Your browser or machine may not support it.");
       return;
     }
-  
-    const rectangleData = [
-      -0.25,0.5,0.0,
-      -0.25,-0.5,0.0,
-      0.25,-0.5,0.0,
-      0.25,0.5,0.0 
-    ]
-
-    indices = [3,2,1,3,1,0];
-
-    // Create an empty buffer object to store vertex buffer
-    var vertex_buffer = gl.createBuffer();
-
-    // Bind appropriate array buffer to it
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-
-    // Pass the vertex data to the buffer
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rectangleData), gl.STATIC_DRAW);
-
-    // Unbind the buffer
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
-    // Create an empty buffer object to store Index buffer
-    var Index_Buffer = gl.createBuffer();
-
-    // Bind appropriate array buffer to it
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-
-    // Pass the vertex data to the buffer
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-
-    // Unbind the buffer
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
     const vert = `
-    attribute vec3 a_pos;
-    uniform mat3 u_proj_mat;
+    attribute vec2 a_pos;
+    uniform vec2 u_resolution;
 
     void main() {
-      gl_Position = vec4(a_pos,1);
-    }`
+        vec2 clipSpace = (a_pos / u_resolution) * 2.0 - 1.0;
+        gl_Position = vec4(clipSpace, 0.0, 1.0);
+    }
+    `
     
     const frag = `precision mediump float;
     
@@ -69,48 +40,53 @@ function main() {
     void main() {
       gl_FragColor = u_fragColor;
     }`
+
+    const shaderProgram = initShaderProgram(gl, vert, frag);
+
+    // gl.useProgram(shaderProgram) // always use the program on the beginning
+
+
+
+
+  
+    const rectangleData = [
+      -0.5,0.5,
+      -0.5,-0.5,
+      0.5,-0.5,
+      0.5,0.5,
+    ]
+
+    // indices = [3,2,1,3,1,0];
     
-    
-    const vertShader = gl.createShader(gl.VERTEX_SHADER)
-    gl.shaderSource(vertShader, vert)
-    gl.compileShader(vertShader)
-    
-    const fragShader = gl.createShader(gl.FRAGMENT_SHADER)
-    gl.shaderSource(fragShader, frag)
-    gl.compileShader(fragShader)
-    
-    const shaderProgram = gl.createProgram()
-    gl.attachShader(shaderProgram, vertShader)
-    gl.attachShader(shaderProgram, fragShader)
-    gl.linkProgram(shaderProgram)
-    
-    gl.useProgram(shaderProgram) // always use the program on the beginning
+    var rectangle = rectangle(1,shaderProgram,gl)
+
+    console.log(rectangle.getDrawType())
 
 
-    // Bind vertex buffer object
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+    // // Bind vertex buffer object
+    // gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-    // Bind index buffer object
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer); 
+    // // Bind index buffer object
+    // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer); 
 
 
 
-    const vertexPos = gl.getAttribLocation(shaderProgram, 'a_pos')
-    gl.vertexAttribPointer(vertexPos, 3, gl.FLOAT, false, 0, 0)
+    // const vertexPos = gl.getAttribLocation(shaderProgram, 'a_pos')
+    // gl.vertexAttribPointer(vertexPos, 3, gl.FLOAT, false, 0, 0)
 
-    const uniformCol = gl.getUniformLocation(shaderProgram, 'u_fragColor')
-    gl.uniform4fv(uniformCol, [1.0, 0.0, 0.0, 0.5])
+    // const uniformCol = gl.getUniformLocation(shaderProgram, 'u_fragColor')
+    // gl.uniform4fv(uniformCol, [1.0, 0.0, 0.0, 0.5])
 
     
-    // Activate the vertex shader attribute to access the buffer object in a vertex shader
-    gl.enableVertexAttribArray(vertexPos) 
+    // // Activate the vertex shader attribute to access the buffer object in a vertex shader
+    // gl.enableVertexAttribArray(vertexPos) 
 
-    // Set clear color to black, fully opaque
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    // Clear the color buffer with specified clear color
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    // // Set clear color to black, fully opaque
+    // gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    // // Clear the color buffer with specified clear color
+    // gl.clear(gl.COLOR_BUFFER_BIT);
 
-    gl.drawElements(gl.TRIANGLES, indices.length,gl.UNSIGNED_SHORT,0)
+    // gl.drawElements(gl.TRIANGLES, indices.length,gl.UNSIGNED_SHORT,0)
 
 
   }
