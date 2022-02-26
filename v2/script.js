@@ -1,13 +1,14 @@
 let MODE
 let COLOR
 let VERTICES = [
-	-0.5, -0.0, 0.0,
-	-0.1, 0.7, 0.0,
-	0.2, 0.6, 0.0,
-	0.7, -0.9, 0.0,
-	0.7, 0.9, 0.0,
-	-0.3, -0.3, 0.0,
+	-0.5, -0.0, 0.0, // 0
+	-0.3, -0.3, 0.0, // 1
+	-0.1, 0.7, 0.0, // 2
+	0.7, -0.9, 0.0, // 3
+	0.96, 0.0, 0.0, // 4
+	0.7, 0.9, 0.0, // 5
 ];
+
 
 const canvas = document.querySelector( "#glcanvas" );
 
@@ -23,6 +24,8 @@ var x = "black",
 	y = 8;
 
 init()
+COLOR = "(0,1,0,1)"
+draw()
 
 function init(){
 
@@ -221,7 +224,7 @@ function draw( )
 
 
     
-    gl.drawArrays( gl.TRIANGLE_STRIP, 0, 6 );
+    gl.drawArrays( gl.TRIANGLES, 0, 6 );
     // gl.drawArrays( gl.LINES, 0, 6 );
 
     // console.log(MODE)
