@@ -40,7 +40,8 @@ function main() {
     }
     `
     
-    const frag = `precision mediump float;
+    const frag = `
+    precision mediump float;
     
     uniform vec4 u_fragColor;
     void main() {
