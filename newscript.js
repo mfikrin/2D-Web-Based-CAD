@@ -1,19 +1,10 @@
 
-
-// MODE = "triangleStrip"
-// COLOR = "(0.0, 1.0, 0.0, .5)"
-// draw()
-
-// MODE = "lines"
-// COLOR = "(0.0, 0.0, 0.0, 1.0)"
-
-
-function draw(mode_draw,color_draw,vertex_data_draw)
+function draw(mode_draw,color_draw,vertex_data_draw,index_data_draw)
 {
     const canvas = document.querySelector( "#glcanvas" );
 
-    canvas.width = 600;
-    canvas.height = 600;
+    canvas.width = 575;
+    canvas.height = 575;
     
 	const gl = canvas.getContext( "webgl" );
 
@@ -29,14 +20,8 @@ function draw(mode_draw,color_draw,vertex_data_draw)
      // Clear the color buffer with specified clear color
      gl.clear(gl.COLOR_BUFFER_BIT);
 
-	// var vertices = [
-	// 	-0.5, -0.2, 0.0,
-	// 	-0.1, 0.7, 0.0,
-	// 	0.2, 0.6, 0.0,
-	// 	0.7, -0.9, 0.0,
-	// 	0.7, 0.9, 0.0,
-	// 	-0.3, -0.3, 0.0,
-	// ];
+
+     // ========== VERTEX BUFFER ==========
 
 	var vertex_buffer = gl.createBuffer( );
 
@@ -45,6 +30,27 @@ function draw(mode_draw,color_draw,vertex_data_draw)
 	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertex_data_draw ), gl.STATIC_DRAW );
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+
+    // ========== INDEX BUFFER ==========
+
+
+    // if (mode_draw == "square" || true){
+    //     // Create an empty buffer object to store Index buffer
+       
+    // }
+
+    console.log("MASUK create buffer index")
+    let Index_Buffer = gl.createBuffer();
+
+    // Bind appropriate array buffer to it
+    gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, Index_Buffer );
+
+    // Pass the vertex data to the buffer
+    gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array (index_data_draw), gl.STATIC_DRAW );
+    
+    // Unbind the buffer
+    gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, null );
 
 	var vertCode = 
 		'attribute vec3 coordinates;' +
@@ -117,6 +123,16 @@ function draw(mode_draw,color_draw,vertex_data_draw)
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
 
+    // if (mode_draw == "square" || true){
+    //     // // Bind index buffer object
+    //     // console.log("MASUK bind index")
+    //     // gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, Index_Buffer );
+    // }
+
+    // Bind index buffer object
+    console.log("MASUK bind index")
+    gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, Index_Buffer );
+
 	var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
 
 	gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
@@ -142,6 +158,14 @@ function draw(mode_draw,color_draw,vertex_data_draw)
         case "triangles":
             gl.drawArrays( gl.TRIANGLES, 0, vertex_data_draw.length/3 );
             break;
+        case "square":
+            gl.drawElements( gl.TRIANGLES, index_data_draw.length, gl.UNSIGNED_SHORT, 0)
+            // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 6);
+            break;
+        case "rectangle":
+            gl.drawElements( gl.TRIANGLES, index_data_draw.length, gl.UNSIGNED_SHORT, 0)
+            // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 6);
+            break;
         case "polygon":
             gl.drawArrays( gl.TRIANGLE_STRIP, 0, vertex_data_draw.length/3);
             break;
@@ -151,14 +175,25 @@ function draw(mode_draw,color_draw,vertex_data_draw)
 
 
 
-let MODE
-let COLOR
-let VERTEX_DATA
+
+
+
+var obj_tracking = {}
+
 var draw_information = {
     "MODE" : "",
     "COLOR" : "",
-    "VERTEX_DATA" : []
+    "VERTEX_DATA" : [],
+    "INDICES" : []
 }
+
+// var obj_tracking = {
+//     "id" : 0,
+//     "info" : draw_information
+    
+// }
+// console.log("obj_tracking")
+// console.log(obj_tracking)
 
 // var draw_information = {
 //     MODE = "mode",
@@ -177,9 +212,77 @@ function line_btn(){
         -0.5, -0.2, 0.0,
 		-0.1, 0.7, 0.0,
     ]
+    draw_information["INDICES"] = []
     console.log(draw_information)
 
-    draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA)
+    draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA,draw_information.INDICES)
+}
+
+function sqr_btn(){
+    console.log("yuhuu sqr")
+    
+    draw_information["MODE"] = "square"
+    draw_information["COLOR"] = [0.0, 1.0, 0.0, 0.5]
+    draw_information["VERTEX_DATA"] = [
+        -0.5, 0.5,0,
+		-0.5, -0.5,0,
+        0.5, -0.5,0,
+		0.5, 0.5,0,
+
+    ]
+
+    draw_information["INDICES"] = [3, 2, 1, 3, 1, 0]
+    
+    console.log(draw_information)
+
+    draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA,draw_information.INDICES)
+}
+
+
+function rect_btn(){
+    console.log("yuhuu rec")
+    
+    draw_information["MODE"] = "rectangle"
+    draw_information["COLOR"] = [0.0, 1.0, 0.0, 0.5]
+    draw_information["VERTEX_DATA"] = [
+        -0.8, 0.5,0,
+		-0.8, -0.5,0,
+        0.8, -0.5,0,
+		0.8, 0.5,0,
+
+    ]
+
+    draw_information["INDICES"] = [3, 2, 1, 3, 1, 0]
+    
+    console.log(draw_information)
+
+    draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA,draw_information.INDICES)
+}
+
+function poly_btn(){
+
+    console.log("yuhuu poly")
+    
+    draw_information["MODE"] = "polygon"
+    draw_information["COLOR"] = [0.0, 1.0, 0.0, 0.5]
+    draw_information["VERTEX_DATA"] = [
+		-0.5, -0.2, 0.0,
+		-0.1, 0.7, 0.0,
+		0.2, 0.6, 0.0,
+		0.7, -0.9, 0.0,
+		0.7, 0.9, 0.0,
+		-0.3, -0.3, 0.0,
+    ]
+    draw_information["INDICES"] = []
+
+    draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA,draw_information.INDICES)
+
+}
+
+function clr_btn(){
+
+    console.log("yuhuu clear")
+    
 }
 
 // console.log(draw_information)
