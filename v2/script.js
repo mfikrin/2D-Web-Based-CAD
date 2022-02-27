@@ -1,5 +1,6 @@
 let MODE
 let COLOR
+let IS_DRAWING = false
 // let VERTICES = [
 // 	-0.5, -0.0, 0.0, // 0
 // 	-0.3, -0.3, 0.0, // 1
@@ -9,78 +10,29 @@ let COLOR
 // 	0.7, 0.9, 0.0, // 5
 // ];
 
-// let VERTICES = [
-// 	-0.5,-0.5,0, // 1
-// 	-0.5,0.5,0, // 0
-// 	0.5,-0.5,0, // 2
-// 	0.5,0.5,0, // 3	
-// ];
 
 let VERTICES = [];
 
 let DRAWN =
 
+
 {
-    "VERTICES" : []
-    ,
-    "OBJECT" :
-    [
-        // {
-        //     "id" : 1,
-        //     "type" : "square",
-        //     "start_idx" : 0,
-        //     "count" : 2,
-        //     "color" : [1,1,1,1]
-        // },   
-    ]
+	"VERTICES" : [],
+    "OBJECT" :[]
+	
 }
 
-console.log("DILUARRRR")
-
-// console.log(DRAWN.OBJECT.length)
-
-// let VERTICES_ = [
-	
-// 	[0.5,-0.5,0], 
-// 	[-0.5,-0.5,0],	
-// 	[0.5,0.5,0],
-// 	[-0.5,0.5,0],
-// ];
-
-// function sortVERTICES(VERTICES,start_idx,count){
-	
-	
-// 	// var idx_array = 3*start_idx
-
-// 	// var max_idx = 3*count
-
-// 	let max_idx = start_idx + count
-
-// 	for (let i = start_idx; i < max_idx; i++) {
-		
-// 		var current_point = idx_array
-// 		var next_point = idx_array+3
+// DRAWN.OBJECT.schema =
+// {
+//     "id" : 1,
+//     "type" : "square",
+//     "start_idx" : 0,
+//     "count" : 2,
+//     "color" : [1,1,1,1]
+// },   
 
 
-// 		if (VERTICES[idx_array + 3] < VERTICES[idx_array]){
-
-
-// 			VERTICES[current_point] = VERTICES[next_point]
-// 			VERTICES[current_point+1] = VERTICES[next_point+1]
-// 			VERTICES[current_point+2] = VERTICES[next_point+2]
-
-// 			VERTICES[current_point] = VERTICES[next_point]
-// 			VERTICES[current_point+1] = VERTICES[next_point+1]
-// 			VERTICES[current_point+2] = VERTICES[next_point+2]
-// 		}else{
-
-// 		}
-		
-// 	}
-// }
-
-
-
+// console.log("DILUARRRR")
 
 const canvas = document.querySelector( "#glcanvas" );
 
@@ -175,17 +127,35 @@ function line_btn(){
     
 }
 
+function poly_btn(){
+	const polygonNodes = document.getElementById("nodePolygon").value
+	console.log("..........\nPOLY_BUTTON Pressed")
+	console.log(`>> ${polygonNodes} sided polygon`)
+
+
+	// setting global variables
+	TYPE = "polygon"
+	COUNTER_POINT = 0
+	TEMP_POINT = []
+	COUNT = polygonNodes
+
+	// setting flag
+	IS_DRAWING = true
+
+
+}
+
 function onDrawStart(currX,currY){
 
-	console.log("ON_DRAW_START")
+	// console.log("ON_DRAW_START")
 	if (TYPE == "square"){
 		
-		console.log("posisi",COUNTER_POINT,currX,currY)
+		// console.log("posisi",COUNTER_POINT,currX,currY)
 		var vertex_position = getVerticePosition(currX,currX)		
-		console.log(vertex_position)
+		// console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
-		console.log(TEMP_POINT)
+		// console.log(TEMP_POINT)
 
 		// TEMP_POINT = [[x1,y1],[x2,y2]]
 
@@ -194,8 +164,8 @@ function onDrawStart(currX,currY){
 			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
 
 			// pivot point = titik pertama yg diclick user
-			console.log("WOI")
-			console.log(TEMP_POINT)
+			// console.log("WOI")
+			// console.log(TEMP_POINT)
 
 			
 
@@ -205,7 +175,7 @@ function onDrawStart(currX,currY){
 			var distanceX = Math.abs(pivotPoint.x - otherPoint.x)
 			var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
 
-			console.log("DistanceX Y",distanceX,distanceY)
+			// console.log("DistanceX Y",distanceX,distanceY)
 
 			// Ikutin yg lebih kecil
 
@@ -266,7 +236,7 @@ function onDrawStart(currX,currY){
 				}
 			}
 
-			console.log(ARAH)
+			// console.log(ARAH)
 
 			DRAWN.VERTICES = VERTICES
 
@@ -281,16 +251,16 @@ function onDrawStart(currX,currY){
 
 			DRAWN.OBJECT.push([info_obj])
 
-			console.log("DRAWNN")
-			console.log(DRAWN)
+			// console.log("DRAWNN")
+			// console.log(DRAWN)
 		}
-	}else if (TYPE == "rectangle"){
-		console.log("posisi",COUNTER_POINT,currX,currY)
+	} else if (TYPE == "rectangle"){
+		// console.log("posisi",COUNTER_POINT,currX,currY)
 		var vertex_position = getVerticePosition(currX,currX)		
-		console.log(vertex_position)
+		// console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
-		console.log(TEMP_POINT)
+		// console.log(TEMP_POINT)
 
 		// TEMP_POINT = [[x1,y1],[x2,y2]]
 
@@ -299,8 +269,8 @@ function onDrawStart(currX,currY){
 			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
 
 			// pivot point = titik pertama yg diclick user
-			console.log("WOI")
-			console.log(TEMP_POINT)
+			// console.log("WOI")
+			// console.log(TEMP_POINT)
 
 			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
 			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
@@ -367,22 +337,22 @@ function onDrawStart(currX,currY){
 				}
 			}
 
-			console.log(ARAH)
+			// console.log(ARAH)
 	}
 
-	}else if (TYPE == "line"){
-		console.log("posisi",COUNTER_POINT,currX,currY)
+	} else if (TYPE == "line"){
+		// console.log("posisi",COUNTER_POINT,currX,currY)
 		var vertex_position = getVerticePosition(currX,currX)		
-		console.log(vertex_position)
+		// console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
-		console.log(TEMP_POINT)
+		// console.log(TEMP_POINT)
 
 		// TEMP_POINT = [[x1,y1],[x2,y2]]
 
 		if (COUNTER_POINT == 2){
-			console.log("WOI")
-			console.log(TEMP_POINT)
+			// console.log("WOI")
+			// console.log(TEMP_POINT)
 
 			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
 			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
@@ -396,6 +366,56 @@ function onDrawStart(currX,currY){
 
 		}
 
+	} else if (TYPE == "polygon"){
+		
+		console.log(`node ${COUNTER_POINT} placed at ${currX},${currY}`)
+		COUNTER_POINT += 1
+
+		// fetching data
+		const currentVertexPos = getVerticePosition(currX, currY)
+
+		// storing data
+		TEMP_POINT.push(currentVertexPos.x)	// x value
+		TEMP_POINT.push(currentVertexPos.y) // y value
+		TEMP_POINT.push(0)					// z value
+		
+		// checking {deleted on production}
+		console.assert(-1 <= currentVertexPos.x && currentVertexPos.x <= 1, "[!] INVALID x VALUE")
+		console.assert(-1 <= currentVertexPos.y && currentVertexPos.y <= 1, "[!] INVALID y VALUE")
+		
+		if (COUNTER_POINT == COUNT){
+			console.log("FINISHED STORING DATA\nResetting global vars and flags...\nDrawing polygon...\n........")
+			
+			// storing temporary data
+			var currentObjectId
+			if (DRAWN.OBJECT.length == 0){
+				currentObjectId = 1
+			} else {
+				currentObjectId = Number(DRAWN.OBJECT[DRAWN.OBJECT.length-1].id) + 1
+			}
+			const currentDrawnObject = {
+				"id" : currentObjectId,
+				"type" : "polygon",
+				"start_idx" : VERTICES.length,
+				"count" : COUNT,
+				"color" : [1,1,1,1]
+			}
+
+			VERTICES = VERTICES.concat(TEMP_POINT)
+			DRAWN.OBJECT.push(currentDrawnObject)
+
+
+			// reset global vars and flags
+			TYPE = ""
+			COUNTER_POINT = 0
+			TEMP_POINT = []
+			COUNT = 0
+			IS_DRAWING = false
+
+			// drawing objects
+			draw()
+			console.log("FINISEHD DRAWING POLYGON")
+		}
 	}
 }
 	
@@ -439,7 +459,7 @@ function getMovedVerticeIndex(currX, currY, clickTolerance = 15){
 		const vy = vi + 1
 		const canvasPosition = getCanvasPosition(VERTICES[vx], VERTICES[vy])
 		if ((canvasPosition.x-clickTolerance<=currX && currX<=canvasPosition.x+clickTolerance) && (canvasPosition.y-clickTolerance<=currY && currY<=canvasPosition.y+clickTolerance)){
-			console.log("RETURN", vi/3);
+			// console.log("RETURN", vi/3);
 			return vi/3
 		}
 	}
@@ -452,12 +472,12 @@ function setVERTICE(idx, canvasPositionX, canvasPositionY){
 		const verticeY = 3*idx + 1
 		const verticePos = getVerticePosition(canvasPositionX, canvasPositionY);
 		
-		console.log(canvasPositionX, canvasPositionY, verticePos);
+		// console.log(canvasPositionX, canvasPositionY, verticePos);
 		VERTICES[verticeX] = verticePos.x
 		VERTICES[verticeY] = verticePos.y
 		draw()
 	}else{
-		console.log("NULL")
+		// console.log("NULL")
 
 	}
 }
@@ -479,7 +499,14 @@ function findxy(res, e) {
 			// ctx.fillRect(currX, currY, y,y);
 			// ctx.closePath();
 			console.log("KK CLICK",currX,currY);
-			movedVerticeIndex = getMovedVerticeIndex(currX, currY)
+			
+			// if not drawing, "grab vertice" enabled
+			if (IS_DRAWING == false){
+				movedVerticeIndex = getMovedVerticeIndex(currX, currY)
+			} else {
+				console.log("IS DRAWING")
+			}
+
 			if (movedVerticeIndex != null){
 				// console.log(movedVerticeIndex)
 				console.log("+++++")
@@ -513,9 +540,13 @@ function findxy(res, e) {
 }
 
 
-function draw(type,start_idx,count)
-{
+function draw(){
     
+	console.log(".......\nDRAWING\n.......")
+
+
+
+
 	const gl = canvas.getContext( "webgl" );
 
 	if ( !gl )
@@ -525,8 +556,10 @@ function draw(type,start_idx,count)
 		return;
 	}
 
-	var vertices = VERTICES
+	console.log("VERTICES: ", VERTICES)
 
+	var vertices = VERTICES
+	
 	var vertex_buffer = gl.createBuffer( );
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
@@ -600,17 +633,17 @@ function draw(type,start_idx,count)
 
 
     
-    gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
+    gl.drawArrays( gl.LINE_LOOP, 0, VERTICES.length/3);
     // gl.drawArrays( gl.LINES, 0, 6 );
 
 
-	var drawn = DRAWN
+	// var drawn = DRAWN
 
-	console.log("HMMM")
+	// console.log("HMMM")
 
-	console.log(drawn)
-	console.log(drawn.OBJECT)
-	console.log(drawn.OBJECT.length)
+	// console.log(drawn)
+	// console.log(drawn.OBJECT)
+	// console.log(drawn.OBJECT.length)
 	
 
 
@@ -621,19 +654,19 @@ function draw(type,start_idx,count)
 	// 	const element = array[index];
 		
 	// }
-	console.log("type")
-    console.log(type)
-    switch (type) {
-        case "line":
-            gl.drawArrays( gl.LINES, start_idx, count);
-            break;
-        case "square":
-            gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
-            break;
-        case "rectangle":
-            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
-            break;
-    }
+	// console.log("type")
+    // console.log(type)
+    // switch (type) {
+    //     case "line":
+    //         gl.drawArrays( gl.LINES, start_idx, count);
+    //         break;
+    //     case "square":
+    //         gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
+    //         break;
+    //     case "rectangle":
+    //         gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
+    //         break;
+    // }
 	// gl.drawArrays( gl.TRIANGLE_FAN, 0, 6 );
 }
 
@@ -653,7 +686,7 @@ function saveFile(drawn){
 
 
 function loadFile() {
-    console.log("MASUKK PAK EKO")
+    // console.log("MASUKK PAK EKO")
     let input = document.getElementById("load");
     let files = input.files; 
   
@@ -665,7 +698,7 @@ function loadFile() {
 
     reader.onload = (e) => {
         const data = JSON.parse(e.target.result)
-        console.log(data)
+        // console.log(data)
 
         
     }
