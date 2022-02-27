@@ -23,19 +23,23 @@ let VERTICES = [];
 let DRAWN =
 
 {
-    "VERTICES" : VERTICES
+    "VERTICES" : []
     ,
     "OBJECT" :
     [
-        {
-            "id" : 1,
-            "type" : "square",
-            "start_idx" : 0,
-            "count" : 2,
-            "color" : [1,1,1,1]
-        },   
+        // {
+        //     "id" : 1,
+        //     "type" : "square",
+        //     "start_idx" : 0,
+        //     "count" : 2,
+        //     "color" : [1,1,1,1]
+        // },   
     ]
 }
+
+console.log("DILUARRRR")
+
+// console.log(DRAWN.OBJECT.length)
 
 // let VERTICES_ = [
 	
@@ -99,8 +103,10 @@ draw()
 
 
 let TYPE 
-let COUNT
+let COUNTER_POINT // cek sudah berapa titik
 let TEMP_POINT
+let START_IDX
+let COUNT // berapa index yang digunakan
 function sqr_btn(){
     // console.log("yuhuu sqr")
 	alert('Klik 2 titik')
@@ -114,8 +120,59 @@ function sqr_btn(){
 	// console.log("point",first_pointX,first_pointY)
 
 	TYPE = "square"
-	COUNT = 0
+	COUNTER_POINT = 0
 	TEMP_POINT = []
+	COUNT = 4
+	var last_idx = (VERTICES.length / 3) - 1
+	START_IDX = last_idx + 1
+
+    
+}
+
+function rec_btn(){
+    // console.log("yuhuu sqr")
+	alert('Klik 2 titik')
+
+	// var first_pointX = 50
+	// var first_pointY = 50
+
+
+
+
+	// console.log("point",first_pointX,first_pointY)
+
+	TYPE = "rectangle"
+	COUNTER_POINT = 0
+	TEMP_POINT = []
+	COUNT = 4
+	var last_idx = (VERTICES.length / 3) - 1
+	START_IDX = last_idx + 1
+
+    
+}
+
+function line_btn(){
+    // console.log("yuhuu sqr")
+	alert('Klik 2 titik')
+
+	// var first_pointX = 50
+	// var first_pointY = 50
+
+
+
+
+	// console.log("point",first_pointX,first_pointY)
+
+	TYPE = "line"
+	COUNTER_POINT = 0
+	TEMP_POINT = []
+	COUNT = 2
+
+	// get last idx vertices
+
+	var last_idx = (VERTICES.length / 3) - 1
+	START_IDX = last_idx + 1
+
 
     
 }
@@ -125,16 +182,16 @@ function onDrawStart(currX,currY){
 	console.log("ON_DRAW_START")
 	if (TYPE == "square"){
 		
-		console.log("posisi",COUNT,currX,currY)
+		console.log("posisi",COUNTER_POINT,currX,currY)
 		var vertex_position = getVerticePosition(currX,currX)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
-		COUNT += 1
+		COUNTER_POINT += 1
 		console.log(TEMP_POINT)
 
 		// TEMP_POINT = [[x1,y1],[x2,y2]]
 
-		if (COUNT == 2){
+		if (COUNTER_POINT == 2){
 			// cari panjang persegi
 			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
 
@@ -142,11 +199,15 @@ function onDrawStart(currX,currY){
 			console.log("WOI")
 			console.log(TEMP_POINT)
 
+			
+
 			const pivotPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
 			const otherPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
 			
 			var distanceX = Math.abs(pivotPoint.x - otherPoint.x)
 			var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
+
+			console.log("DistanceX Y",distanceX,distanceY)
 
 			// Ikutin yg lebih kecil
 
@@ -169,6 +230,107 @@ function onDrawStart(currX,currY){
 					ARAH += "ATAS" // INDEKS 0
 					VERTICES.push(
 						pivotPoint.x, pivotPoint.y, 0, // 0
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
+						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
+						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
+					)
+					draw("square",START_IDX,COUNT)
+				}else{
+					ARAH += "BAWAH" // INDEKS 1
+					VERTICES.push(
+						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
+						pivotPoint.x, pivotPoint.y, 0, // 1
+						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
+						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
+					)
+					draw("square",START_IDX,COUNT)
+				}
+			}else{
+				ARAH = "KIRI"
+				if (pivotPoint.y < otherPoint.y){
+					ARAH += "ATAS" // INDEKS 2
+					VERTICES.push(
+						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
+						pivotPoint.x, pivotPoint.y, 0, // 1
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
+						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
+					)
+					draw("square",START_IDX,COUNT)
+				}else{
+					ARAH += "BAWAH" // INDEKS 3
+					VERTICES.push(
+						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
+						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
+						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
+						pivotPoint.x, pivotPoint.y, 0, // 3
+					)
+					draw("square",START_IDX,COUNT)
+				}
+			}
+
+			console.log(ARAH)
+
+			DRAWN.VERTICES = VERTICES
+
+			var info_obj = 
+			{
+				"id" : 1,
+				"type" : TYPE,
+				"start_idx" : START_IDX,
+				"count" : COUNT,
+				"color" : [1,1,1,1]
+			}
+
+			DRAWN.OBJECT.push([info_obj])
+
+			console.log("DRAWNN")
+			console.log(DRAWN)
+		}
+	}else if (TYPE == "rectangle"){
+		console.log("posisi",COUNTER_POINT,currX,currY)
+		var vertex_position = getVerticePosition(currX,currX)		
+		console.log(vertex_position)
+		TEMP_POINT.push([vertex_position.x,vertex_position.y])
+		COUNTER_POINT += 1
+		console.log(TEMP_POINT)
+
+		// TEMP_POINT = [[x1,y1],[x2,y2]]
+
+		if (COUNTER_POINT == 2){
+			// cari panjang persegi
+			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
+
+			// pivot point = titik pertama yg diclick user
+			console.log("WOI")
+			console.log(TEMP_POINT)
+
+			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
+			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
+			
+			var distanceX = Math.abs(FirstPoint.x - SecondPoint.x)
+			var distanceY = Math.abs(FirstPoint.y - SecondPoint.y)
+
+			// Ikutin yg lebih kecil
+
+			// const lengthSquare = Math.min(distanceX,distanceY)
+
+			var ARAH
+
+
+			// REFER -> INDEKS
+			// let VERTICES = [
+			// 	-0.5,-0.5,0, // 0
+			// 	-0.5,0.5,0, // 1
+			// 	0.5,-0.5,0, // 2
+			// 	0.5,0.5,0, // 3			
+			// ];
+			if (pivotPoint.x < otherPoint.x){
+				ARAH = "KANAN"
+
+				if (pivotPoint.y < otherPoint.y){
+					ARAH += "ATAS" // INDEKS 0
+					VERTICES.push(
+						FirstPoint.x, FirstPoint.y, 0, // 0
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
@@ -208,19 +370,37 @@ function onDrawStart(currX,currY){
 			}
 
 			console.log(ARAH)
-
-			
-			
-			
-
-
-
-			
-
-		}
 	}
 
+	}else if (TYPE == "line"){
+		console.log("posisi",COUNTER_POINT,currX,currY)
+		var vertex_position = getVerticePosition(currX,currX)		
+		console.log(vertex_position)
+		TEMP_POINT.push([vertex_position.x,vertex_position.y])
+		COUNTER_POINT += 1
+		console.log(TEMP_POINT)
+
+		// TEMP_POINT = [[x1,y1],[x2,y2]]
+
+		if (COUNTER_POINT == 2){
+			console.log("WOI")
+			console.log(TEMP_POINT)
+
+			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
+			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
+			
+			VERTICES.push(
+				FirstPoint.x,FirstPoint.y,0,
+				SecondPoint.x,SecondPoint.y,0,
+			)
+
+			draw(TYPE,START_IDX,COUNT)
+
+		}
+
+	}
 }
+	
 
 
 
@@ -335,7 +515,7 @@ function findxy(res, e) {
 }
 
 
-function draw( )
+function draw(type,start_idx,count)
 {
     
 	const gl = canvas.getContext( "webgl" );
@@ -425,18 +605,37 @@ function draw( )
     gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
     // gl.drawArrays( gl.LINES, 0, 6 );
 
-    // console.log(MODE)
-    // switch (MODE) {
-    //     case "lines":
-    //         gl.drawArrays( gl.LINES, 0, 6 );
-    //         break;
-    //     case "triangles":
-    //         gl.drawArrays( gl.TRIANGLES, 0, 6 );
-    //         break;
-    //     case "triangleStrip":
-    //         gl.drawArrays( gl.TRIANGLE_STRIP, 0, 6 );
-    //         break;
-    // }
+
+	var drawn = DRAWN
+
+	console.log("HMMM")
+
+	console.log(drawn)
+	console.log(drawn.OBJECT)
+	console.log(drawn.OBJECT.length)
+	
+
+
+	// console.log(DRAWN.OBJECT)
+
+	// console.log("BANYAK OBJECT",DRAWN.OBJECT.length)
+	// for (let index = 0; index < DRAWN.OBJECT.length; index++) {
+	// 	const element = array[index];
+		
+	// }
+	console.log("type")
+    console.log(type)
+    switch (type) {
+        case "line":
+            gl.drawArrays( gl.LINES, start_idx, count);
+            break;
+        case "square":
+            gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
+            break;
+        case "rectangle":
+            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
+            break;
+    }
 	// gl.drawArrays( gl.TRIANGLE_FAN, 0, 6 );
 }
 
@@ -475,5 +674,4 @@ function loadFile() {
   
     reader.readAsText(file);
 }
-
 
