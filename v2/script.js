@@ -1,14 +1,26 @@
 let MODE
 let COLOR
-let VERTICES = [
-	-0.5, -0.0, 0.0, // 0
-	-0.3, -0.3, 0.0, // 1
-	-0.1, 0.7, 0.0, // 2
-	0.7, -0.9, 0.0, // 3
-	0.96, 0.0, 0.0, // 4
-	0.7, 0.9, 0.0, // 5
-];
+let VERTICES = []
+// [
+// 	-0.5, 0.5, 0.0, // 0
+// 	0.5, 0.5, 0.0, // 3
+// 	-0.5, -0.5, 0.0, // 1
+// 	0.5, -0.5, 0.0, // 2
+// 	0.7, 0.9, 0.0, // 5
+// 	0.96, 0.0, 0.0, // 4
+// ];
 
+let DRAWN_SHAPE = []
+// [
+// 	{"type": "polygon", "startIndex": 0, "countIndex": 4, "color": [1.0,1.0,0.0,0.0]},
+// 	{"type": "line", "startIndex": 4, "countIndex": 2, "color": [1.0,1.0,0.0,0.0]},
+// ]
+
+// STRUKTUR SAVED FILE (json)
+// {
+// 	"VERTICES": VERTICES,
+// 	"DRAWN_SHAPE": DRAWN_SHAPE,
+// }
 
 const canvas = document.querySelector( "#glcanvas" );
 
@@ -24,7 +36,7 @@ var x = "black",
 	y = 8;
 
 init()
-COLOR = "(0,1,0,1)"
+COLOR = "(0,0,0,0.5)"
 draw()
 
 function init(){
@@ -214,7 +226,7 @@ function draw( )
 
 	gl.enableVertexAttribArray( coord );
 
-	gl.clearColor( 1.0, 0.0, 0.0, 1.0 );
+	gl.clearColor( 0.0, 0.0, 0.0, .25 );
 
 	gl.enable( gl.DEPTH_TEST );
 
@@ -224,8 +236,9 @@ function draw( )
 
 
     
-    gl.drawArrays( gl.TRIANGLES, 0, 6 );
-    // gl.drawArrays( gl.LINES, 0, 6 );
+    // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 5 );
+    gl.drawArrays( gl.LINE_LOOP, 0, 5 );
+    gl.drawArrays( gl.LINES, 2, 4 );
 
     // console.log(MODE)
     // switch (MODE) {

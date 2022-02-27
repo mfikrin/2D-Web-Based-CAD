@@ -1,14 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>WebGL</title>
-		<link rel="stylesheet" href="index.css" type="text/css" />
-	</head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!-- <script src = "Object/glObject.js" defer></script> -->
+    <script src = "newscript.js" defer></script>
+    <link href="style.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-2">
+            <div class="left-bar">
+                <div class="tool_title"> Tools</div>
+                <div class="tool"><button id="line_btn" class="tool_btn" , onclick="line_btn()"><img src="icons/line.svg"></button>  <span class="tool_text">Line</span></div> 
+                <div class="tool"><button id="square_btn" class="tool_btn" , onclick="sqr_btn()"><img src="icons/square.svg"></button>  <span class="tool_text">Square</span></div> 
+                <div class="tool"><button id="rec_btn" class="tool_btn" , onclick="rect_btn()"><img src="icons/rectangle.svg"></button>  <span class="tool_text">Rectangle</span></div> 
+                <div class="tool"><button id="poly_btn" class="tool_btn" , onclick="poly_btn()"><img src="icons/polygon.svg"></button>  <span class="tool_text">Polygon</span></div> 
+                <div class="tool"><button id="clr_btn" class="tool_btn" , onclick="clr_btn()"><img src="icons/polygon.svg"></button>  <span class="tool_text">Clear Canvas</span></div> 
+                <div class="tool_title"> File Management</div>
+                <div class="tool">
+                  <label for="load" class="label-style">
+                    <img src="icons/upload-file-svgrepo-com.svg" width="50px" height="50px" style="cursor: pointer;margin-left: 13px;"><span class="tool_text" style="margin-left: 23px; cursor: pointer;">Upload file</span>
+                  </label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="file"
+                    id="load"
+                    accept=".json,application/json"
+                    style="display:none;visibility:hidden "
+                    onchange="loadfile(this.value);"
+                  />
+                </div> 
+                <div class="tool"><button class="tool_btn" id="save" , onclick=""><img src="icons/save-icon-svgrepo-com.svg"></button>  <span class="tool_text">Save</span></div>
+                <div class="tool_title"> Documentation</div>
+                <div class="tool"><button class="tool_btn" id="help" , onclick=""><img src="icons/documentation.svg"></button>  <span class="tool_text">Help</span></div>
 
-	<body style="display: flex; justify-content: center; align-items: center;">
-		<canvas id="glcanvas" width="500" height="500"></canvas>
-	</body>
 
-	<script src="script.js" defer></script>
+            </div>
+        </div>
+
+        <div class="col-8" style="display: flex; align-items: center;justify-content: center;">
+			<canvas id="glcanvas" width="500" height="500"></canvas>
+        </div>
+        <div class="col-2">
+          <div class="right-bar">
+            <div>
+              <label class="form-object">Selected Item :</label> 
+              <div class="item-select" id="Selected-item">None</div>
+              
+            </div>
+
+            <div>
+              <label class="form-object">Choose color</label>
+              <input type="color" class="form-control" id="color" />
+            </div>
+      
+            <div>
+              <label class="form-object">Number of Node Polygon</label>
+              <input
+                type="number"
+                id="nodePolygon"
+                placeholder="node polygon"
+                value="3"
+                min="3"
+                class="form-control form-control-sm"
+              />
+            </div>
+
+            <div>
+              <label class="form-object">Shape Width</label>
+              <input type="range" class="form-range" id="width" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+</body>
+
 </html>
