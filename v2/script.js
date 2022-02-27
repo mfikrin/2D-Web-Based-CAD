@@ -20,21 +20,31 @@ let COLOR
 
 let VERTICES = [];
 
+let OBJ_TRACKER = [];
+
+// [
+    //     // {
+    //     //     "id" : 1,
+    //     //     "type" : "square",
+    //     //     "start_idx" : 0,
+    //     //     "count" : 2,
+    //     //     "color" : [1,1,1,1]
+    //     // },   
+    // ]
 let DRAWN =
 
 {
-    "VERTICES" : []
+    "VERTICES" : VERTICES
     ,
-    "OBJECT" :
-    [
-        // {
-        //     "id" : 1,
-        //     "type" : "square",
-        //     "start_idx" : 0,
-        //     "count" : 2,
-        //     "color" : [1,1,1,1]
-        // },   
-    ]
+    "OBJECT" : 
+	[
+		// "id" : 1,
+		// //     //     "type" : "square",
+		// //     //     "start_idx" : 0,
+		// //     //     "count" : 2,
+		// //     //     "color" : [1,1,1,1]
+	]
+    
 }
 
 console.log("DILUARRRR")
@@ -183,7 +193,7 @@ function onDrawStart(currX,currY){
 	if (TYPE == "square"){
 		
 		console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currX)		
+		var vertex_position = getVerticePosition(currX,currY)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
@@ -251,9 +261,9 @@ function onDrawStart(currX,currY){
 					ARAH += "ATAS" // INDEKS 2
 					VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
-						pivotPoint.x, pivotPoint.y, 0, // 1
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
-						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
+						pivotPoint.x - lengthSquare, pivotPoint.y + lengthSquare, 0, // 1
+						pivotPoint.x, pivotPoint.y, 0, // 2
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
 					)
 					draw("square",START_IDX,COUNT)
 				}else{
@@ -281,7 +291,7 @@ function onDrawStart(currX,currY){
 				"color" : [1,1,1,1]
 			}
 
-			DRAWN.OBJECT.push([info_obj])
+			DRAWN.OBJECT.push(info_obj)
 
 			console.log("DRAWNN")
 			console.log(DRAWN)
@@ -545,6 +555,8 @@ function draw(type,start_idx,count)
             gl.drawArrays( gl.LINES, start_idx, count);
             break;
         case "square":
+			console.log("MASUK ?")
+			console.log(start_idx,count)
             gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
             break;
         case "rectangle":
