@@ -244,7 +244,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
 					)
-					draw("square",START_IDX,COUNT)
+					draw(TYPE,START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
 					VERTICES.push(
@@ -253,7 +253,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
 					)
-					draw("square",START_IDX,COUNT)
+					draw(TYPE,START_IDX,COUNT)
 				}
 			}else{
 				ARAH = "KIRI"
@@ -265,7 +265,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y, 0, // 2
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
 					)
-					draw("square",START_IDX,COUNT)
+					draw(TYPE,START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
 					VERTICES.push(
@@ -274,7 +274,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x, pivotPoint.y, 0, // 3
 					)
-					draw("square",START_IDX,COUNT)
+					draw(TYPE,START_IDX,COUNT)
 				}
 			}
 
@@ -384,7 +384,7 @@ function onDrawStart(currX,currY){
 
 	}else if (TYPE == "line"){
 		console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currX)		
+		var vertex_position = getVerticePosition(currX,currY)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
@@ -539,7 +539,7 @@ function draw(type,start_idx,count)
 
 	var vertices = VERTICES
 
-	var vertex_buffer = gl.createBuffer( );
+	var vertex_buffer = gl.createBuffer();
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
 
@@ -612,7 +612,7 @@ function draw(type,start_idx,count)
 
 
     
-    gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
+    // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
     // gl.drawArrays( gl.LINES, 0, 6 );
 
 
@@ -637,12 +637,14 @@ function draw(type,start_idx,count)
     console.log(type)
     switch (type) {
         case "line":
+			console.log("MASUKK LINE")
             gl.drawArrays( gl.LINES, start_idx, count);
             break;
         case "square":
 			console.log("MASUK ?")
 			console.log(start_idx,count)
-            gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
+            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx,count );
+			console.log("lewat")
             break;
         case "rectangle":
             gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
