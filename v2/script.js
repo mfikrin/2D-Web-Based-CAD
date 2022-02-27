@@ -254,7 +254,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
 					)
 					DRAWN.VERTICES = VERTICES
-					draw(TYPE,START_IDX,COUNT)
+					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
 					VERTICES.push(
@@ -264,7 +264,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
 					)
 					DRAWN.VERTICES = VERTICES
-					draw(TYPE,START_IDX,COUNT)
+					draw()
 				}
 			}else{
 				ARAH = "KIRI"
@@ -277,7 +277,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
 					)
 					DRAWN.VERTICES = VERTICES
-					draw(TYPE,START_IDX,COUNT)
+					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
 					VERTICES.push(
@@ -287,7 +287,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y, 0, // 3
 					)
 					DRAWN.VERTICES = VERTICES
-					draw(TYPE,START_IDX,COUNT)
+					draw()
 				}
 			}
 
@@ -415,7 +415,7 @@ function onDrawStart(currX,currY){
 			DRAWN.VERTICES = VERTICES
 			DRAWN.OBJECT.push(info_obj)
 
-			draw(TYPE,START_IDX,COUNT)
+			draw()
 
 		}
 
@@ -539,7 +539,7 @@ function findxy(res, e) {
 }
 
 
-function draw(type,start_idx,count)
+function draw()
 {
     
 	const gl = canvas.getContext( "webgl" );
@@ -652,7 +652,7 @@ function draw(type,start_idx,count)
 				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
 				break;
 			case "rectangle":
-				gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
+				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
 				break;
 		}
 	}
