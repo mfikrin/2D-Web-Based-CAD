@@ -416,6 +416,9 @@ function onDrawStart(currX,currY){
 
 function init(){
 
+
+	
+
 	canvas.addEventListener("mousemove", function (e) {
 		findxy('move', e)
 	}, false);
@@ -541,12 +544,60 @@ function draw(type,start_idx,count)
 
 	var vertices = VERTICES
 
-	var vertex_buffer = gl.createBuffer();
+	var vertex_buffer = gl.createBuffer( );
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-	gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(linePoints));
-	gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-	gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(lineColors));
+	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+	gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+	var vertCode = 
+		'attribute vec3 coordinates;' +
+		'void main(void)' +
+		'{' +
+			' gl_Position = vec4(coordinates, 1.0);' +
+		'}';
+
+	var vertShader = gl.createShader( gl.VERTEX_SHADER );
+
+	gl.shaderSource( vertShader, vertCode );
+
+	gl.compileShader( vertShader );
+
+
+	// const frag = `precision mediump float;
+    
+    // uniform vec4 u_fragColor;
+    // void main() {
+    //   gl_FragColor = u_fragColor;
+    // }`
+
+	var fragCode = 
+        `void main(void){
+            gl_FragColor = vec4${COLOR};
+        }`;
+		// 'void main(void)' +
+		// '{' +
+		// 	' gl_FragColor = vec4' + COLOR +
+		// '}';
+		
+
+	var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
+
+	gl.shaderSource( fragShader, fragCode );
+
+	gl.compileShader( fragShader );
+
+	var shaderProgram = gl.createProgram( );
+
+	gl.attachShader( shaderProgram, vertShader );
+
+	gl.attachShader( shaderProgram, fragShader );
+
+	gl.linkProgram( shaderProgram );
+
+	gl.useProgram( shaderProgram );
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
 
@@ -591,14 +642,10 @@ function draw(type,start_idx,count)
     console.log(type)
     switch (type) {
         case "line":
-			console.log("MASUKK LINE")
             gl.drawArrays( gl.LINES, start_idx, count);
             break;
         case "square":
-			console.log("MASUK ?")
-			console.log(start_idx,count)
             gl.drawArrays( gl.TRIANGLE_STRIP, start_idx,count );
-			console.log("lewat")
             break;
         case "rectangle":
             gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
