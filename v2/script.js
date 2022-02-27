@@ -34,7 +34,7 @@ let OBJ_TRACKER = [];
 let DRAWN =
 
 {
-    "VERTICES" : VERTICES
+    "VERTICES" : []
     ,
     "OBJECT" : 
 	[
@@ -225,6 +225,15 @@ function onDrawStart(currX,currY){
 
 			var ARAH
 
+			var info_obj = 
+			{
+				"id" : 1,
+				"type" : TYPE,
+				"start_idx" : START_IDX,
+				"count" : COUNT,
+				"color" : [1,1,1,1]
+			}
+			DRAWN.OBJECT.push(info_obj)
 
 			// REFER -> INDEKS
 			// let VERTICES = [
@@ -244,6 +253,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
 					)
+					DRAWN.VERTICES = VERTICES
 					draw(TYPE,START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
@@ -253,6 +263,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
 					)
+					DRAWN.VERTICES = VERTICES
 					draw(TYPE,START_IDX,COUNT)
 				}
 			}else{
@@ -265,6 +276,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y, 0, // 2
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
 					)
+					DRAWN.VERTICES = VERTICES
 					draw(TYPE,START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
@@ -274,24 +286,12 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x, pivotPoint.y, 0, // 3
 					)
+					DRAWN.VERTICES = VERTICES
 					draw(TYPE,START_IDX,COUNT)
 				}
 			}
 
 			console.log(ARAH)
-
-			DRAWN.VERTICES = VERTICES
-
-			var info_obj = 
-			{
-				"id" : 1,
-				"type" : TYPE,
-				"start_idx" : START_IDX,
-				"count" : COUNT,
-				"color" : [1,1,1,1]
-			}
-
-			DRAWN.OBJECT.push(info_obj)
 
 			console.log("DRAWNN")
 			console.log(DRAWN)
@@ -395,6 +395,15 @@ function onDrawStart(currX,currY){
 		if (COUNTER_POINT == 2){
 			console.log("WOI")
 			console.log(TEMP_POINT)
+
+			var info_obj = 
+			{
+				"id" : 1,
+				"type" : TYPE,
+				"start_idx" : START_IDX,
+				"count" : COUNT,
+				"color" : [1,1,1,1]
+			}
 
 			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
 			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
@@ -628,29 +637,23 @@ function draw(type,start_idx,count)
 	console.log(drawn)
 	console.log(drawn.OBJECT)
 	console.log(drawn.OBJECT.length)
-	
 
-
-	// console.log(DRAWN.OBJECT)
-
-	// console.log("BANYAK OBJECT",DRAWN.OBJECT.length)
-	// for (let index = 0; index < DRAWN.OBJECT.length; index++) {
-	// 	const element = array[index];
-		
-	// }
-	console.log("type")
-    console.log(type)
-    switch (type) {
-        case "line":
-            gl.drawArrays( gl.LINES, start_idx, count);
-            break;
-        case "square":
-            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx,count );
-            break;
-        case "rectangle":
-            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
-            break;
-    }
+	console.log("BANYAK OBJECT", drawn.OBJECT.length)
+	for (let index = 0; index < drawn.OBJECT.length; index++) {
+		console.log("type")
+		console.log(drawn.OBJECT[index].type)
+		switch (drawn.OBJECT[index].type) {
+			case "line":
+				gl.drawArrays( gl.LINES, start_idx, count);
+				break;
+			case "square":
+				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
+				break;
+			case "rectangle":
+				gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
+				break;
+		}
+	}
 	// gl.drawArrays( gl.TRIANGLE_FAN, 0, 6 );
 }
 
