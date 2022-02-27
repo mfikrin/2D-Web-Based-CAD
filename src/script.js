@@ -1,98 +1,32 @@
 let MODE
 let COLOR
-// let VERTICES = [
-// 	-0.5, -0.0, 0.0, // 0
-// 	-0.3, -0.3, 0.0, // 1
-// 	-0.1, 0.7, 0.0, // 2
-// 	0.7, -0.9, 0.0, // 3
-// 	0.96, 0.0, 0.0, // 4
-// 	0.7, 0.9, 0.0, // 5
-// ];
 
-// let VERTICES = [
-// 	-0.5,-0.5,0, // 1
-// 	-0.5,0.5,0, // 0
-// 	0.5,-0.5,0, // 2
-// 	0.5,0.5,0, // 3
-	
-	
-// ];
+// let FLAG_UPLOAD = false
+// // let VERTICES
+// if (!FLAG_UPLOAD){
+// 	VERTICES = []
+// }
 
-let VERTICES = [];
 
-let OBJ_TRACKER = [];
+// let FLAG_UPLOAD = false
+// // let VERTICES
+// if (!FLAG_UPLOAD){
+// 	VERTICES = []
+// }
 
-// [
-    //     // {
-    //     //     "id" : 1,
-    //     //     "type" : "square",
-    //     //     "start_idx" : 0,
-    //     //     "count" : 2,
-    //     //     "color" : [1,1,1,1]
-    //     // },   
-    // ]
+// VERTICES = []
+
 let DRAWN =
 
 {
     "VERTICES" : []
     ,
-    "OBJECT" : 
-	[
-		// "id" : 1,
-		// //     //     "type" : "square",
-		// //     //     "start_idx" : 0,
-		// //     //     "count" : 2,
-		// //     //     "color" : [1,1,1,1]
-	]
-    
+    "OBJECT" : []
+	,
+	"COUNT_SHAPE" : 0
 }
 
 console.log("DILUARRRR")
-
-// console.log(DRAWN.OBJECT.length)
-
-// let VERTICES_ = [
-	
-// 	[0.5,-0.5,0], 
-// 	[-0.5,-0.5,0],	
-// 	[0.5,0.5,0],
-// 	[-0.5,0.5,0],
-// ];
-
-// function sortVERTICES(VERTICES,start_idx,count){
-	
-	
-// 	// var idx_array = 3*start_idx
-
-// 	// var max_idx = 3*count
-
-// 	let max_idx = start_idx + count
-
-// 	for (let i = start_idx; i < max_idx; i++) {
-		
-// 		var current_point = idx_array
-// 		var next_point = idx_array+3
-
-
-// 		if (VERTICES[idx_array + 3] < VERTICES[idx_array]){
-
-
-// 			VERTICES[current_point] = VERTICES[next_point]
-// 			VERTICES[current_point+1] = VERTICES[next_point+1]
-// 			VERTICES[current_point+2] = VERTICES[next_point+2]
-
-// 			VERTICES[current_point] = VERTICES[next_point]
-// 			VERTICES[current_point+1] = VERTICES[next_point+1]
-// 			VERTICES[current_point+2] = VERTICES[next_point+2]
-// 		}else{
-
-// 		}
-		
-// 	}
-// }
-
-
-
 
 const canvas = document.querySelector( "#glcanvas" );
 
@@ -111,68 +45,36 @@ init()
 COLOR = "(0,0,0,0.5)"
 draw()
 
-
+// let COUNT_SHAPE = 0
 let TYPE 
 let COUNTER_POINT // cek sudah berapa titik
 let TEMP_POINT
 let START_IDX
 let COUNT // berapa index yang digunakan
 function sqr_btn(){
-    // console.log("yuhuu sqr")
 	alert('Klik 2 titik')
-
-	// var first_pointX = 50
-	// var first_pointY = 50
-
-
-
-
-	// console.log("point",first_pointX,first_pointY)
-
 	TYPE = "square"
 	COUNTER_POINT = 0
 	TEMP_POINT = []
 	COUNT = 4
-	var last_idx = (VERTICES.length / 3) - 1
-	START_IDX = last_idx + 1
-
-    
+	var last_idx = (DRAWN.VERTICES.length / 3) - 1
+	START_IDX = last_idx + 1  
 }
 
 function rec_btn(){
-    // console.log("yuhuu sqr")
 	alert('Klik 2 titik')
-
-	// var first_pointX = 50
-	// var first_pointY = 50
-
-
-
-
-	// console.log("point",first_pointX,first_pointY)
-
 	TYPE = "rectangle"
 	COUNTER_POINT = 0
 	TEMP_POINT = []
 	COUNT = 4
-	var last_idx = (VERTICES.length / 3) - 1
+	var last_idx = (DRAWN.VERTICES.length / 3) - 1
 	START_IDX = last_idx + 1
 
     
 }
 
 function line_btn(){
-    // console.log("yuhuu sqr")
 	alert('Klik 2 titik')
-
-	// var first_pointX = 50
-	// var first_pointY = 50
-
-
-
-
-	// console.log("point",first_pointX,first_pointY)
-
 	TYPE = "line"
 	COUNTER_POINT = 0
 	TEMP_POINT = []
@@ -180,7 +82,7 @@ function line_btn(){
 
 	// get last idx vertices
 
-	var last_idx = (VERTICES.length / 3) - 1
+	var last_idx = (DRAWN.VERTICES.length / 3) - 1
 	START_IDX = last_idx + 1
 
 
@@ -225,13 +127,15 @@ function onDrawStart(currX,currY){
 
 			var ARAH
 
+			DRAWN.COUNT_SHAPE ++
+
 			var info_obj = 
 			{
-				"id" : 1,
+				"id" : DRAWN.COUNT_SHAPE,
 				"type" : TYPE,
 				"start_idx" : START_IDX,
 				"count" : COUNT,
-				"color" : [1,1,1,1]
+				"color" : COLOR
 			}
 			DRAWN.OBJECT.push(info_obj)
 
@@ -247,46 +151,46 @@ function onDrawStart(currX,currY){
 
 				if (pivotPoint.y < otherPoint.y){
 					ARAH += "ATAS" // INDEKS 0
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x, pivotPoint.y, 0, // 0
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
 					)
-					DRAWN.VERTICES = VERTICES
+					// DRAWN.VERTICES = VERTICES
 					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
 						pivotPoint.x, pivotPoint.y, 0, // 1
 						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
 					)
-					DRAWN.VERTICES = VERTICES
+					// DRAWN.VERTICES = VERTICES
 					draw()
 				}
 			}else{
 				ARAH = "KIRI"
 				if (pivotPoint.y < otherPoint.y){
 					ARAH += "ATAS" // INDEKS 2
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
 						pivotPoint.x - lengthSquare, pivotPoint.y + lengthSquare, 0, // 1
 						pivotPoint.x, pivotPoint.y, 0, // 2
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
 					)
-					DRAWN.VERTICES = VERTICES
+					// DRAWN.VERTICES = VERTICES
 					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x, pivotPoint.y, 0, // 3
 					)
-					DRAWN.VERTICES = VERTICES
+					// DRAWN.VERTICES = VERTICES
 					draw()
 				}
 			}
@@ -339,7 +243,7 @@ function onDrawStart(currX,currY){
 
 				if (pivotPoint.y < otherPoint.y){
 					ARAH += "ATAS" // INDEKS 0
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						FirstPoint.x, FirstPoint.y, 0, // 0
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
@@ -348,7 +252,7 @@ function onDrawStart(currX,currY){
 					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
 						pivotPoint.x, pivotPoint.y, 0, // 1
 						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
@@ -360,7 +264,7 @@ function onDrawStart(currX,currY){
 				ARAH = "KIRI"
 				if (pivotPoint.y < otherPoint.y){
 					ARAH += "ATAS" // INDEKS 2
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
 						pivotPoint.x, pivotPoint.y, 0, // 1
 						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
@@ -369,7 +273,7 @@ function onDrawStart(currX,currY){
 					draw()
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
-					VERTICES.push(
+					DRAWN.VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
@@ -395,24 +299,25 @@ function onDrawStart(currX,currY){
 		if (COUNTER_POINT == 2){
 			console.log("WOI")
 			console.log(TEMP_POINT)
-
+			
+			DRAWN.COUNT_SHAPE ++
 			var info_obj = 
 			{
-				"id" : 1,
+				"id" : DRAWN.COUNT_SHAPE,
 				"type" : TYPE,
 				"start_idx" : START_IDX,
 				"count" : COUNT,
-				"color" : [1,1,1,1]
+				"color" : COLOR
 			}
 
 			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
 			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
 			
-			VERTICES.push(
+			DRAWN.VERTICES.push(
 				FirstPoint.x,FirstPoint.y,0,
 				SecondPoint.x,SecondPoint.y,0,
 			)
-			DRAWN.VERTICES = VERTICES
+			// DRAWN.VERTICES = VERTICES
 			DRAWN.OBJECT.push(info_obj)
 
 			draw()
@@ -460,10 +365,10 @@ function getCanvasPosition(verticePositionX, verticePositionY){
 
 function getMovedVerticeIndex(currX, currY, clickTolerance = 15){
 
-	for (var vi = 0; vi < VERTICES.length; vi += 3){
+	for (var vi = 0; vi < DRAWN.VERTICES.length; vi += 3){
 		const vx = vi
 		const vy = vi + 1
-		const canvasPosition = getCanvasPosition(VERTICES[vx], VERTICES[vy])
+		const canvasPosition = getCanvasPosition(DRAWN.VERTICES[vx], DRAWN.VERTICES[vy])
 		if ((canvasPosition.x-clickTolerance<=currX && currX<=canvasPosition.x+clickTolerance) && (canvasPosition.y-clickTolerance<=currY && currY<=canvasPosition.y+clickTolerance)){
 			console.log("RETURN", vi/3);
 			return vi/3
@@ -479,8 +384,8 @@ function setVERTICE(idx, canvasPositionX, canvasPositionY){
 		const verticePos = getVerticePosition(canvasPositionX, canvasPositionY);
 		
 		console.log(canvasPositionX, canvasPositionY, verticePos);
-		VERTICES[verticeX] = verticePos.x
-		VERTICES[verticeY] = verticePos.y
+		DRAWN.VERTICES[verticeX] = verticePos.x
+		DRAWN.VERTICES[verticeY] = verticePos.y
 		draw()
 	}else{
 		console.log("NULL")
@@ -553,7 +458,7 @@ function draw()
 
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
-	var vertices = VERTICES
+	var vertices = DRAWN.VERTICES
 
 	var vertex_buffer = gl.createBuffer( );
 
@@ -644,14 +549,21 @@ function draw()
 	for (let index = 0; index < drawn.OBJECT.length; index++) {
 		console.log("type")
 		console.log(drawn.OBJECT[index].type)
+
+		var bool = ((drawn.OBJECT[index].type) === "line")
+		console.log(bool)
+
 		switch (drawn.OBJECT[index].type) {
 			case "line":
+				console.log("MASUK LINE")
 				gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
 				break;
 			case "square":
+				console.log("MASUK SQR")
 				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
 				break;
 			case "rectangle":
+				console.log("MASUK RTL")
 				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
 				break;
 		}
@@ -662,11 +574,16 @@ function draw()
 
 
 
-function saveFile(drawn){
+function saveFile(){
+
+	console.log("in save file")
+	console.log(DRAWN)
+	console.log(DRAWN.VERTICES)
+	console.log(DRAWN.OBJECT)
     
     const a = document.createElement("a");
 
-    const file = new Blob([JSON.stringify(drawn)], { type: "json" });
+    const file = new Blob([JSON.stringify(DRAWN)], { type: "json" });
     a.href = URL.createObjectURL(file);
     a.download = "filename.json";
     a.click();
@@ -686,12 +603,147 @@ function loadFile() {
     let reader = new FileReader();
 
     reader.onload = (e) => {
-        const data = JSON.parse(e.target.result)
-        console.log(data)
+        DRAWN = JSON.parse(e.target.result)
+		console.log("onloadddd")
+        console.log(DRAWN)
 
-        
+		// draw()
+		render(DRAWN)
     }
   
     reader.readAsText(file);
+}
+
+function render(data){
+	const gl = canvas.getContext( "webgl" );
+
+	FLAG_UPLOAD = true
+
+	if ( !gl )
+	{
+		alert( "Unable to setup WebGL. Your browser or computer may not support it." );
+
+		return;
+	}
+
+	gl.clear(gl.COLOR_BUFFER_BIT);
+
+	var vertices = data.VERTICES
+
+	var vertex_buffer = gl.createBuffer( );
+
+	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+	gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+	var vertCode = 
+		'attribute vec3 coordinates;' +
+		'void main(void)' +
+		'{' +
+			' gl_Position = vec4(coordinates, 1.0);' +
+		'}';
+
+	var vertShader = gl.createShader( gl.VERTEX_SHADER );
+
+	gl.shaderSource( vertShader, vertCode );
+
+	gl.compileShader( vertShader );
+
+
+	// const frag = `precision mediump float;
+    
+    // uniform vec4 u_fragColor;
+    // void main() {
+    //   gl_FragColor = u_fragColor;
+    // }`
+
+	var fragCode = 
+        `void main(void){
+            gl_FragColor = vec4${data.OBJECT[0].color};
+        }`;
+		// 'void main(void)' +
+		// '{' +
+		// 	' gl_FragColor = vec4' + COLOR +
+		// '}';
+		
+
+	var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
+
+	gl.shaderSource( fragShader, fragCode );
+
+	gl.compileShader( fragShader );
+
+	var shaderProgram = gl.createProgram( );
+
+	gl.attachShader( shaderProgram, vertShader );
+
+	gl.attachShader( shaderProgram, fragShader );
+
+	gl.linkProgram( shaderProgram );
+
+	gl.useProgram( shaderProgram );
+
+	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+	var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
+
+	gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
+
+	gl.enableVertexAttribArray( coord );
+
+	gl.clearColor( 0.0, 0.0, 0.0, .25 );
+
+	gl.enable( gl.DEPTH_TEST );
+
+	gl.clear( gl.COLOR_BUFFER_BIT );
+
+	gl.viewport( 0, 0, canvas.width, canvas.height );
+
+
+    
+    // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
+    // gl.drawArrays( gl.LINES, 0, 6 );
+
+
+	var drawn = DRAWN
+
+	console.log("HMMM")
+
+	console.log(drawn)
+	console.log(drawn.OBJECT)
+	console.log(drawn.OBJECT.length)
+
+	console.log("BANYAK OBJECT", drawn.OBJECT.length)
+	for (let index = 0; index < drawn.OBJECT.length; index++) {
+		console.log("type")
+		console.log(drawn.OBJECT[index].type)
+
+		var bool = ((drawn.OBJECT[index].type) == "line")
+		console.log(bool)
+
+		switch (drawn.OBJECT[index].type) {
+			case "line":
+				console.log("MASUK LINE")
+				gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
+				break;
+			case "square":
+				console.log("MASUK SQUARE")
+				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
+				break;
+			case "rectangle":
+				console.log("MASUK RECTANGLE")
+				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
+				break;
+		}
+	}
+
+	DRAWN.VERTICES = data.VERTICES
+	DRAWN.OBJECT = data.OBJECT
+	DRAWN.COUNT_SHAPE = data.COUNT_SHAPE
+
+	console.log("YG PLG BAWAH")
+	console.log(DRAWN)
 }
 
