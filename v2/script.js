@@ -13,38 +13,26 @@ let COLOR
 // 	-0.5,-0.5,0, // 1
 // 	-0.5,0.5,0, // 0
 // 	0.5,-0.5,0, // 2
-// 	0.5,0.5,0, // 3
-	
-	
+// 	0.5,0.5,0, // 3	
 // ];
 
 let VERTICES = [];
 
-let OBJ_TRACKER = [];
-
-// [
-    //     // {
-    //     //     "id" : 1,
-    //     //     "type" : "square",
-    //     //     "start_idx" : 0,
-    //     //     "count" : 2,
-    //     //     "color" : [1,1,1,1]
-    //     // },   
-    // ]
 let DRAWN =
 
 {
-    "VERTICES" : VERTICES
+    "VERTICES" : []
     ,
-    "OBJECT" : 
-	[
-		// "id" : 1,
-		// //     //     "type" : "square",
-		// //     //     "start_idx" : 0,
-		// //     //     "count" : 2,
-		// //     //     "color" : [1,1,1,1]
-	]
-    
+    "OBJECT" :
+    [
+        // {
+        //     "id" : 1,
+        //     "type" : "square",
+        //     "start_idx" : 0,
+        //     "count" : 2,
+        //     "color" : [1,1,1,1]
+        // },   
+    ]
 }
 
 console.log("DILUARRRR")
@@ -193,7 +181,7 @@ function onDrawStart(currX,currY){
 	if (TYPE == "square"){
 		
 		console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currY)		
+		var vertex_position = getVerticePosition(currX,currX)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
@@ -244,7 +232,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
 					)
-					draw(TYPE,START_IDX,COUNT)
+					draw("square",START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 1
 					VERTICES.push(
@@ -253,7 +241,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
 					)
-					draw(TYPE,START_IDX,COUNT)
+					draw("square",START_IDX,COUNT)
 				}
 			}else{
 				ARAH = "KIRI"
@@ -261,11 +249,11 @@ function onDrawStart(currX,currY){
 					ARAH += "ATAS" // INDEKS 2
 					VERTICES.push(
 						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
-						pivotPoint.x - lengthSquare, pivotPoint.y + lengthSquare, 0, // 1
-						pivotPoint.x, pivotPoint.y, 0, // 2
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
+						pivotPoint.x, pivotPoint.y, 0, // 1
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
+						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
 					)
-					draw(TYPE,START_IDX,COUNT)
+					draw("square",START_IDX,COUNT)
 				}else{
 					ARAH += "BAWAH" // INDEKS 3
 					VERTICES.push(
@@ -274,7 +262,7 @@ function onDrawStart(currX,currY){
 						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
 						pivotPoint.x, pivotPoint.y, 0, // 3
 					)
-					draw(TYPE,START_IDX,COUNT)
+					draw("square",START_IDX,COUNT)
 				}
 			}
 
@@ -291,7 +279,7 @@ function onDrawStart(currX,currY){
 				"color" : [1,1,1,1]
 			}
 
-			DRAWN.OBJECT.push(info_obj)
+			DRAWN.OBJECT.push([info_obj])
 
 			console.log("DRAWNN")
 			console.log(DRAWN)
@@ -384,7 +372,7 @@ function onDrawStart(currX,currY){
 
 	}else if (TYPE == "line"){
 		console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currY)		
+		var vertex_position = getVerticePosition(currX,currX)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNTER_POINT += 1
@@ -537,16 +525,62 @@ function draw(type,start_idx,count)
 		return;
 	}
 
-	gl.clear(gl.COLOR_BUFFER_BIT);
-
 	var vertices = VERTICES
 
-	var vertex_buffer = gl.createBuffer();
+	var vertex_buffer = gl.createBuffer( );
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-	gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(linePoints));
-	gl.bindBuffer(gl.ARRAY_BUFFER, cBufferId);
-	gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(lineColors));
+	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+	gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+	var vertCode = 
+		'attribute vec3 coordinates;' +
+		'void main(void)' +
+		'{' +
+			' gl_Position = vec4(coordinates, 1.0);' +
+		'}';
+
+	var vertShader = gl.createShader( gl.VERTEX_SHADER );
+
+	gl.shaderSource( vertShader, vertCode );
+
+	gl.compileShader( vertShader );
+
+
+	// const frag = `precision mediump float;
+    
+    // uniform vec4 u_fragColor;
+    // void main() {
+    //   gl_FragColor = u_fragColor;
+    // }`
+
+	var fragCode = 
+        `void main(void){
+            gl_FragColor = vec4${COLOR};
+        }`;
+		// 'void main(void)' +
+		// '{' +
+		// 	' gl_FragColor = vec4' + COLOR +
+		// '}';
+		
+
+	var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
+
+	gl.shaderSource( fragShader, fragCode );
+
+	gl.compileShader( fragShader );
+
+	var shaderProgram = gl.createProgram( );
+
+	gl.attachShader( shaderProgram, vertShader );
+
+	gl.attachShader( shaderProgram, fragShader );
+
+	gl.linkProgram( shaderProgram );
+
+	gl.useProgram( shaderProgram );
 
 	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
 
@@ -566,7 +600,7 @@ function draw(type,start_idx,count)
 
 
     
-    // gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
+    gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4);
     // gl.drawArrays( gl.LINES, 0, 6 );
 
 
@@ -591,14 +625,10 @@ function draw(type,start_idx,count)
     console.log(type)
     switch (type) {
         case "line":
-			console.log("MASUKK LINE")
             gl.drawArrays( gl.LINES, start_idx, count);
             break;
         case "square":
-			console.log("MASUK ?")
-			console.log(start_idx,count)
-            gl.drawArrays( gl.TRIANGLE_STRIP, start_idx,count );
-			console.log("lewat")
+            gl.drawArrays( gl.TRIANGLES_STRIP, start_idx,count );
             break;
         case "rectangle":
             gl.drawArrays( gl.TRIANGLE_STRIP, start_idx, count );
