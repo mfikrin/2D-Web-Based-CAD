@@ -1,0 +1,26 @@
+YANG BISA DI-UPDATE:
+- VERTICES
+- DRAWN_SHAPE
+? COLOR
+
+[v] move vertice
+
+DAFFA
+[ ] refaktor fungsi draw()  {kayak referensi di bawah}
+[ ] set color
+// tambahin data (VERTICES dan DRAWN_SHAPE), penggil fungsi draw(), termasuk mouseclick nya
+[.] draw line
+
+NAUFAL
+[ ] draw polygon masih ada bug.
+alternatif solusi: sort dulu berdasarkan sumbu x (minimal pakai TRIANGLE_STRIP. Walau gk perfect, tapi mayan)
+[ ] draw rectangle
+
+SAVE LOAD
+[ ] draw square
+[ ] save
+[ ] load
+
+
+SEMENTARA:
+- pakai referensi https://github.com/jonesnapoleon/2d-architecture-cad/

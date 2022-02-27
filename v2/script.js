@@ -92,7 +92,7 @@ var x = "black",
 	y = 8;
 
 init()
-COLOR = "(0,1,0,1)"
+COLOR = "(0,0,0,0.5)"
 draw()
 
 
@@ -351,7 +351,7 @@ function draw( )
 
 	gl.enableVertexAttribArray( coord );
 
-	gl.clearColor( 1.0, 0.0, 0.0, 1.0 );
+	gl.clearColor( 0.0, 0.0, 0.0, .25 );
 
 	gl.enable( gl.DEPTH_TEST );
 
