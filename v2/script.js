@@ -79,26 +79,18 @@ function sqr_btn(){
     
 }
 
-function rec_btn(){
+function rect_btn(){
     // console.log("yuhuu sqr")
-	alert('Klik 2 titik')
+	alert('Klik 2 titik sudut yang berseberangan')
 
-	// var first_pointX = 50
-	// var first_pointY = 50
-
-
-
-
-	// console.log("point",first_pointX,first_pointY)
-
+	// setting global variables
 	TYPE = "rectangle"
 	COUNTER_POINT = 0
 	TEMP_POINT = []
-	COUNT = 4
-	var last_idx = (VERTICES.length / 3) - 1
-	START_IDX = last_idx + 1
+	COUNT = 2
 
-    
+	// setting flag
+	IS_DRAWING = true    
 }
 
 function line_btn(){
@@ -129,9 +121,6 @@ function line_btn(){
 
 function poly_btn(){
 	const polygonNodes = document.getElementById("nodePolygon").value
-	console.log("..........\nPOLY_BUTTON Pressed")
-	console.log(`>> ${polygonNodes} sided polygon`)
-
 
 	// setting global variables
 	TYPE = "polygon"
@@ -255,90 +244,69 @@ function onDrawStart(currX,currY){
 			// console.log(DRAWN)
 		}
 	} else if (TYPE == "rectangle"){
-		// console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currX)		
-		// console.log(vertex_position)
-		TEMP_POINT.push([vertex_position.x,vertex_position.y])
+				
 		COUNTER_POINT += 1
-		// console.log(TEMP_POINT)
 
-		// TEMP_POINT = [[x1,y1],[x2,y2]]
+		// fetching data
+		const currentVertexPos = getVerticePosition(currX, currY)
 
-		if (COUNTER_POINT == 2){
-			// cari panjang persegi
-			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
-
-			// pivot point = titik pertama yg diclick user
-			// console.log("WOI")
-			// console.log(TEMP_POINT)
-
-			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
-			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
-			
-			var distanceX = Math.abs(FirstPoint.x - SecondPoint.x)
-			var distanceY = Math.abs(FirstPoint.y - SecondPoint.y)
-
-			// Ikutin yg lebih kecil
-
-			// const lengthSquare = Math.min(distanceX,distanceY)
-
-			var ARAH
-
-
-			// REFER -> INDEKS
-			// let VERTICES = [
-			// 	-0.5,-0.5,0, // 0
-			// 	-0.5,0.5,0, // 1
-			// 	0.5,-0.5,0, // 2
-			// 	0.5,0.5,0, // 3			
-			// ];
-			if (pivotPoint.x < otherPoint.x){
-				ARAH = "KANAN"
-
-				if (pivotPoint.y < otherPoint.y){
-					ARAH += "ATAS" // INDEKS 0
-					VERTICES.push(
-						FirstPoint.x, FirstPoint.y, 0, // 0
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
-						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
-						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
-					)
-					draw()
-				}else{
-					ARAH += "BAWAH" // INDEKS 1
-					VERTICES.push(
-						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
-						pivotPoint.x, pivotPoint.y, 0, // 1
-						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
-						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
-					)
-					draw()
-				}
-			}else{
-				ARAH = "KIRI"
-				if (pivotPoint.y < otherPoint.y){
-					ARAH += "ATAS" // INDEKS 2
-					VERTICES.push(
-						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
-						pivotPoint.x, pivotPoint.y, 0, // 1
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
-						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
-					)
-					draw()
-				}else{
-					ARAH += "BAWAH" // INDEKS 3
-					VERTICES.push(
-						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
-						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
-						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
-						pivotPoint.x, pivotPoint.y, 0, // 3
-					)
-					draw()
-				}
+		// storing data
+		TEMP_POINT.push(currentVertexPos.x)	// x value
+		TEMP_POINT.push(currentVertexPos.y) // y value
+		TEMP_POINT.push(0)					// z value
+		
+		// checking {deleted on production}
+		console.assert(-1 <= currentVertexPos.x && currentVertexPos.x <= 1, "[!] INVALID x VALUE")
+		console.assert(-1 <= currentVertexPos.y && currentVertexPos.y <= 1, "[!] INVALID y VALUE")
+		
+		if (COUNTER_POINT == COUNT){
+			// storing temporary data
+			var currentObjectId
+			if (DRAWN.OBJECT.length == 0){
+				currentObjectId = 1
+			} else {
+				currentObjectId = Number(DRAWN.OBJECT[DRAWN.OBJECT.length-1].id) + 1
 			}
+			const currentDrawnObject = {
+				"id" : currentObjectId,
+				"type" : "polygon",
+				"start_idx" : VERTICES.length,
+				"count" : 4,
+				"color" : [1,1,1,1]
+			}
+			// --- INFO ---
+			// acquired points: (a,b,z1) and (c,d,z2)
+			// ------------
+			// storing 1st node
+			VERTICES.push(TEMP_POINT[0]) // point a
+			VERTICES.push(TEMP_POINT[1]) // point b
+			VERTICES.push(TEMP_POINT[2]) // z1
+			// storing 2nd node
+			VERTICES.push(TEMP_POINT[0]) // point a
+			VERTICES.push(TEMP_POINT[4]) // point d
+			VERTICES.push(TEMP_POINT[2]) // z1
+			// storing 3rd node
+			VERTICES.push(TEMP_POINT[3]) // point c
+			VERTICES.push(TEMP_POINT[4]) // point d
+			VERTICES.push(TEMP_POINT[5]) // z2
+			// storing 4th node
+			VERTICES.push(TEMP_POINT[3]) // point c
+			VERTICES.push(TEMP_POINT[1]) // point b
+			VERTICES.push(TEMP_POINT[2]) // z2
+			// storing object info
+			DRAWN.OBJECT.push(currentDrawnObject)
 
-			// console.log(ARAH)
-	}
+
+			// reset global vars and flags
+			TYPE = ""
+			COUNTER_POINT = 0
+			TEMP_POINT = []
+			COUNT = 0
+			IS_DRAWING = false
+
+			// drawing objects
+			draw()
+		}
 
 	} else if (TYPE == "line"){
 		// console.log("posisi",COUNTER_POINT,currX,currY)
@@ -368,7 +336,6 @@ function onDrawStart(currX,currY){
 
 	} else if (TYPE == "polygon"){
 		
-		console.log(`node ${COUNTER_POINT} placed at ${currX},${currY}`)
 		COUNTER_POINT += 1
 
 		// fetching data
@@ -384,8 +351,6 @@ function onDrawStart(currX,currY){
 		console.assert(-1 <= currentVertexPos.y && currentVertexPos.y <= 1, "[!] INVALID y VALUE")
 		
 		if (COUNTER_POINT == COUNT){
-			console.log("FINISHED STORING DATA\nResetting global vars and flags...\nDrawing polygon...\n........")
-			
 			// storing temporary data
 			var currentObjectId
 			if (DRAWN.OBJECT.length == 0){
@@ -414,7 +379,6 @@ function onDrawStart(currX,currY){
 
 			// drawing objects
 			draw()
-			console.log("FINISEHD DRAWING POLYGON")
 		}
 	}
 }
@@ -632,8 +596,18 @@ function draw(){
 	gl.viewport( 0, 0, canvas.width, canvas.height );
 
 
+	// drawing objects
+	for (let i = 0; i<DRAWN.OBJECT.length; i++){
+		let drawingType = gl.LINE_LOOP, startIndex=0, count = VERTICES.length/3
+
+		startIndex = DRAWN.OBJECT[i].start_idx/3
+		count = DRAWN.OBJECT[i].count
+		console.log(startIndex, count, VERTICES.length)
+
+		gl.drawArrays( drawingType, startIndex, count);
+	}
     
-    gl.drawArrays( gl.LINE_LOOP, 0, VERTICES.length/3);
+	// gl.drawArrays( gl.LINE_LOOP, 0, 4);
     // gl.drawArrays( gl.LINES, 0, 6 );
 
 
