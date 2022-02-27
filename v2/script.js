@@ -9,14 +9,16 @@ let COLOR
 // 	0.7, 0.9, 0.0, // 5
 // ];
 
-let VERTICES = [
-	-0.5,-0.5,0, // 1
-	-0.5,0.5,0, // 0
-	0.5,-0.5,0, // 2
-	0.5,0.5,0, // 3
+// let VERTICES = [
+// 	-0.5,-0.5,0, // 1
+// 	-0.5,0.5,0, // 0
+// 	0.5,-0.5,0, // 2
+// 	0.5,0.5,0, // 3
 	
 	
-];
+// ];
+
+let VERTICES = [];
 
 let DRAWN =
 
@@ -124,7 +126,7 @@ function onDrawStart(currX,currY){
 	if (TYPE == "square"){
 		
 		console.log("posisi",COUNT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currX)
+		var vertex_position = getVerticePosition(currX,currX)		
 		console.log(vertex_position)
 		TEMP_POINT.push([vertex_position.x,vertex_position.y])
 		COUNT += 1
@@ -136,14 +138,76 @@ function onDrawStart(currX,currY){
 			// cari panjang persegi
 			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
 
+			// pivot point = titik pertama yg diclick user
+			console.log("WOI")
+			console.log(TEMP_POINT)
+
 			const pivotPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
+			const otherPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
 			
-			var distanceX = Math.abs(TEMP_POINT[0][0] - TEMP_POINT[1][0])
-			var distanceY = Math.abs(TEMP_POINT[0][1] - TEMP_POINT[1][1])
+			var distanceX = Math.abs(pivotPoint.x - otherPoint.x)
+			var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
 
 			// Ikutin yg lebih kecil
 
 			const lengthSquare = Math.min(distanceX,distanceY)
+
+			var ARAH
+
+
+			// REFER -> INDEKS
+			// let VERTICES = [
+			// 	-0.5,-0.5,0, // 0
+			// 	-0.5,0.5,0, // 1
+			// 	0.5,-0.5,0, // 2
+			// 	0.5,0.5,0, // 3			
+			// ];
+			if (pivotPoint.x < otherPoint.x){
+				ARAH = "KANAN"
+
+				if (pivotPoint.y < otherPoint.y){
+					ARAH += "ATAS" // INDEKS 0
+					VERTICES.push(
+						pivotPoint.x, pivotPoint.y, 0, // 0
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
+						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
+						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
+					)
+					draw()
+				}else{
+					ARAH += "BAWAH" // INDEKS 1
+					VERTICES.push(
+						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
+						pivotPoint.x, pivotPoint.y, 0, // 1
+						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
+						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
+					)
+					draw()
+				}
+			}else{
+				ARAH = "KIRI"
+				if (pivotPoint.y < otherPoint.y){
+					ARAH += "ATAS" // INDEKS 2
+					VERTICES.push(
+						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
+						pivotPoint.x, pivotPoint.y, 0, // 1
+						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
+						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
+					)
+					draw()
+				}else{
+					ARAH += "BAWAH" // INDEKS 3
+					VERTICES.push(
+						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
+						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
+						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
+						pivotPoint.x, pivotPoint.y, 0, // 3
+					)
+					draw()
+				}
+			}
+
+			console.log(ARAH)
 
 			
 			
@@ -158,9 +222,6 @@ function onDrawStart(currX,currY){
 
 }
 
-function detLengthSquare(arr){
-
-}
 
 
 function init(){
