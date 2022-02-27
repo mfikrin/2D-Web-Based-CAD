@@ -412,6 +412,8 @@ function onDrawStart(currX,currY){
 				FirstPoint.x,FirstPoint.y,0,
 				SecondPoint.x,SecondPoint.y,0,
 			)
+			DRAWN.VERTICES = VERTICES
+			DRAWN.OBJECT.push(info_obj)
 
 			draw(TYPE,START_IDX,COUNT)
 
@@ -644,7 +646,7 @@ function draw(type,start_idx,count)
 		console.log(drawn.OBJECT[index].type)
 		switch (drawn.OBJECT[index].type) {
 			case "line":
-				gl.drawArrays( gl.LINES, start_idx, count);
+				gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
 				break;
 			case "square":
 				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
