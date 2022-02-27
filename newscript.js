@@ -1,4 +1,3 @@
-
 function draw(mode_draw,color_draw,vertex_data_draw,index_data_draw)
 {
     const canvas = document.querySelector( "#glcanvas" );
@@ -285,8 +284,33 @@ function clr_btn(){
     
 }
 
-// console.log(draw_information)
-// console.log(draw_information.MODE)
+function loadfile() {
+    console.log("MASUKK PAK EKO")
+    let input = document.getElementById("load");
+    let files = input.files; 
+  
+    if (files.length == 0) return;
 
-// draw(draw_information.MODE,draw_information.COLOR,draw_information.VERTEX_DATA)
+    const file = files[0]; 
+  
+    let reader = new FileReader();
+
+    reader.onload = (e) => {
+        const data = JSON.parse(e.target.result)
+        console.log(data)
+
+        
+    }
+  
+    reader.readAsText(file);
+}
+
+function saveFile(content,filename,contentType){
+    const a = document.createElement("a");
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 

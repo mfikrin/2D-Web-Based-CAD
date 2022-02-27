@@ -47,6 +47,9 @@ class glObject{
         gl_draw.drawArrays(this.getDrawType(), 0, this.va.length/2)
     }
 
+    var uniformCol = gl_draw.getUniformLocation(this.shader, 'u_fragColor')
+        gl_draw.uniform4fv(uniformCol, this.col)
+
 
 }
 

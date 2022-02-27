@@ -1,11 +1,5 @@
 
 
-function loadfile(filename)
- {
-  const file = filename;
-  console.log(file);
- }
-
 // import { rectangle, rectangle } from './Object/glObject';
 //  import {initShaderProgram} from './shader'
 
