@@ -63,7 +63,6 @@ const setWidth = (e) => {
 	console.log("scale",SCALE);
 	// SCALE_FLAG = true
 
-
 	changeWidth(SCALE)
 
 	// render(DRAWN)
@@ -71,182 +70,229 @@ const setWidth = (e) => {
 
 function changeWidth(scales){
 	console.log("change width")
-	DRAWN.OBJECT[0].scale = scales // nanti ganti jd id selected object
-
-	if (DRAWN.OBJECT[0].type == "square"){
-		// var distanceX = Math.abs(DRAWN.pivotPoint.x - otherPoint.x)
-		// var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
-
-		console.log("lg di change widthh")
-		// console.log("DistanceX Y",distanceX,distanceY)
-
-		// Ikutin yg lebih kecil
-
-		console.log("length",DRAWN.OBJECT[0].sqr_length)
-		console.log("length",DRAWN.OBJECT[0].scale)
-
-		const lengthSquare = DRAWN.OBJECT[0].sqr_length * DRAWN.OBJECT[0].scale
-
-		console.log("lenth square after slider",lengthSquare)
-
-		var ARAH
-
-		// DRAWN.COUNT_SHAPE ++
-
-		// var info_obj = 
-		// {
-		// 	"id" : DRAWN.COUNT_SHAPE,
-		// 	"type" : TYPE,
-		// 	"start_idx" : START_IDX,
-		// 	"count" : COUNT,
-		// 	"color" : COLOR,
-		// 	"scale" : 1,
-		// 	"pivot_point" : pivotPoint,
-		// 	"sqr_length" : lengthSquare,
-		// }
-
-		DRAWN.OBJECT[0].sqr_length = lengthSquare
-
-		// DRAWN.OBJECT.push(info_obj)
-
-		// REFER -> INDEKS
-		// let VERTICES = [
-		// 	-0.5,-0.5,0, // 0
-		// 	-0.5,0.5,0, // 1
-		// 	0.5,-0.5,0, // 2
-		// 	0.5,0.5,0, // 3			
-		// ];
-		if (DRAWN.OBJECT[0].pivotPoint.x < DRAWN.OBJECT[0].otherPoint.x){
-			ARAH = "KANAN"
-
-			if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
-				ARAH += "ATAS" // INDEKS 0
-				// DRAWN.VERTICES = []
-
-				console.log("BEFORE",DRAWN.VERTICES)
-
-				const temp_arr = [
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-					DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-					DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
-				]
-
-				let iter = 0
-				for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-					DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-					iter++
-				}
-
-				console.log("AFTER",DRAWN.VERTICES)
-
-				// DRAWN.VERTICES.push(
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-				// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-				// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
-				// )
-				// DRAWN.VERTICES = VERTICES
-				draw()
-			}else{
-				ARAH += "BAWAH" // INDEKS 1
-				// DRAWN.VERTICES = []
-				// DRAWN.VERTICES.push(
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-				// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-				// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-				// )
-				console.log("BEFORE",DRAWN.VERTICES)
-				const temp_arr = [
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-					DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-					DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-				]
-
-				let iter = 0
-				for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-					DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-					iter++
-				}
-				console.log("AFTER",DRAWN.VERTICES)
-				// DRAWN.VERTICES = VERTICES
-				draw()
-			}
-		}else{
-			ARAH = "KIRI"
-			if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
-				ARAH += "ATAS" // INDEKS 2
-				// DRAWN.VERTICES = []
-				// DRAWN.VERTICES.push(
-				// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-				// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
-				// )
-				// DRAWN.VERTICES = VERTICES
-				console.log("BEFORE",DRAWN.VERTICES)
-
-				const temp_arr = [
-					DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-					DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
-				]
-
-				let iter = 0
-				for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-					DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-					iter++
-				}
-
-				console.log("AFTER",DRAWN.VERTICES)
-
-				draw()
-			}else{
-				ARAH += "BAWAH" // INDEKS 3
-				// DRAWN.VERTICES = []
-				// DRAWN.VERTICES.push(
-				// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-				// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-				// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-				// )
-				// DRAWN.VERTICES = VERTICES
-
-				console.log("BEFORE",DRAWN.VERTICES)
-				const temp_arr = [
-					DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-					DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-					DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-				]
-
-				console.log("start idx",DRAWN.OBJECT[0].start_idx)
-				console.log("start idx",DRAWN.OBJECT[0].start_idx)
-				console.log("start idx",DRAWN.OBJECT[0].start_idx)
-
-				let iter = 0
-				for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-					DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-					iter++
-				}
-
-				console.log("AFTER",DRAWN.VERTICES)
-
-				draw()
+	if (SELECTED_ITEM != null){
+		console.log(SELECTED_ITEM)
+		let idx = 0
+		for (let i = 0; i<DRAWN.OBJECT.length; i++){
+			if (SELECTED_ITEM.id == DRAWN.OBJECT[i].id){
+				idx = i
 			}
 		}
+		DRAWN.OBJECT[idx].scale = scales // nanti ganti jd id selected object
+		
+		// alert("INININ")
+		if (DRAWN.OBJECT[idx].type == "square"){
+			// alert("TYPE TRUE")
+			const firstVertexIndex = 0
+			for (let i=0; i<idx; i++){
+				firstVertexIndex += DRAWN.OBJECT[i].count * 3
+			}
+			var x1,y1,x2,y2, xc, yc
+			x1 = DRAWN.VERTICES[firstVertexIndex]
+			y1 = DRAWN.VERTICES[firstVertexIndex+1]
+			x2 = DRAWN.VERTICES[firstVertexIndex+6]
+			y2 = DRAWN.VERTICES[firstVertexIndex+7]
 
-		console.log(ARAH)
+			xc = (x1+x2)/2
+			yc = (y1+y2)/2
 
-		console.log("DRAWNN")
-		console.log(DRAWN)
+			let dx, dy
+			dx = Math.abs(x1-xc)*scales
+			dy = Math.abs(y1-yc)*scales
+			
+			for (let j=firstVertexIndex; j<firstVertexIndex
+				+12; j+=3){
+				if (DRAWN.VERTICES[j] < xc){
+					DRAWN.VERTICES[j] = xc-dx
+				}  else {
+					DRAWN.VERTICES[j] = xc+dx
+				}
+
+				if (DRAWN.VERTICES[j+1] < yc){
+					DRAWN.VERTICES[j+1] = yc-dy
+				}  else {
+					DRAWN.VERTICES[j+1] = yc+dy
+				}
+			}
+
+			draw()			
 
 
 
-	// render(DRAWN)
+			// // var distanceX = Math.abs(DRAWN.pivotPoint.x - otherPoint.x)
+			// // var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
+	
+			// console.log("lg di change widthh")
+			// // console.log("DistanceX Y",distanceX,distanceY)
+	
+			// // Ikutin yg lebih kecil
+	
+			// console.log("length",DRAWN.OBJECT[idx].sqr_length)
+			// console.log("length",DRAWN.OBJECT[idx].scale)
+	
+			// const lengthSquare = DRAWN.OBJECT[idx].sqr_length * DRAWN.OBJECT[idx].scale
+	
+			// console.log("lenth square after slider",lengthSquare)
+	
+			// var ARAH
+	
+			// // DRAWN.COUNT_SHAPE ++
+	
+			// // var info_obj = 
+			// // {
+			// // 	"id" : DRAWN.COUNT_SHAPE,
+			// // 	"type" : TYPE,
+			// // 	"start_idx" : START_IDX,
+			// // 	"count" : COUNT,
+			// // 	"color" : COLOR,
+			// // 	"scale" : 1,
+			// // 	"pivot_point" : pivotPoint,
+			// // 	"sqr_length" : lengthSquare,
+			// // }
+	
+			// DRAWN.OBJECT[idx].sqr_length = lengthSquare
+	
+			// // DRAWN.OBJECT.push(info_obj)
+	
+			// // REFER -> INDEKS
+			// // let VERTICES = [
+			// // 	-0.5,-0.5,0, // 0
+			// // 	-0.5,0.5,0, // 1
+			// // 	0.5,-0.5,0, // 2
+			// // 	0.5,0.5,0, // 3			
+			// // ];
+			// if (DRAWN.OBJECT[0].pivotPoint.x < DRAWN.OBJECT[0].otherPoint.x){
+			// 	ARAH = "KANAN"
+	
+			// 	if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
+			// 		ARAH += "ATAS" // INDEKS 0
+			// 		// DRAWN.VERTICES = []
+	
+			// 		console.log("BEFORE",DRAWN.VERTICES)
+	
+			// 		const temp_arr = [
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
+			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
+			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
+			// 		]
+	
+			// 		let iter = 0
+			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
+			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
+			// 			iter++
+			// 		}
+	
+			// 		console.log("AFTER",DRAWN.VERTICES)
+	
+			// 		// DRAWN.VERTICES.push(
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
+			// 		// )
+			// 		// DRAWN.VERTICES = VERTICES
+			// 		draw()
+			// 	}else{
+			// 		ARAH += "BAWAH" // INDEKS 1
+			// 		// DRAWN.VERTICES = []
+			// 		// DRAWN.VERTICES.push(
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
+			// 		// )
+			// 		console.log("BEFORE",DRAWN.VERTICES)
+			// 		const temp_arr = [
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
+			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
+			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
+			// 		]
+	
+			// 		let iter = 0
+			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
+			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
+			// 			iter++
+			// 		}
+			// 		console.log("AFTER",DRAWN.VERTICES)
+			// 		// DRAWN.VERTICES = VERTICES
+			// 		draw()
+			// 	}
+			// }else{
+			// 	ARAH = "KIRI"
+			// 	if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
+			// 		ARAH += "ATAS" // INDEKS 2
+			// 		// DRAWN.VERTICES = []
+			// 		// DRAWN.VERTICES.push(
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
+			// 		// )
+			// 		// DRAWN.VERTICES = VERTICES
+			// 		console.log("BEFORE",DRAWN.VERTICES)
+	
+			// 		const temp_arr = [
+			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
+			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
+			// 		]
+	
+			// 		let iter = 0
+			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
+			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
+			// 			iter++
+			// 		}
+	
+			// 		console.log("AFTER",DRAWN.VERTICES)
+	
+			// 		draw()
+			// 	}else{
+			// 		ARAH += "BAWAH" // INDEKS 3
+			// 		// DRAWN.VERTICES = []
+			// 		// DRAWN.VERTICES.push(
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
+			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
+			// 		// )
+			// 		// DRAWN.VERTICES = VERTICES
+	
+			// 		console.log("BEFORE",DRAWN.VERTICES)
+			// 		const temp_arr = [
+			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
+			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
+			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
+			// 		]
+	
+			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
+			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
+			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
+	
+			// 		let iter = 0
+			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
+			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
+			// 			iter++
+			// 		}
+	
+			// 		console.log("AFTER",DRAWN.VERTICES)
+	
+			// 		draw()
+			// 	}
+			// }
+	
+			// console.log(ARAH)
+	
+			// console.log("DRAWNN")
+			// console.log(DRAWN)
+	
+	
+	
+		// render(DRAWN)
+		}
 	}
 	
 }
@@ -340,12 +386,12 @@ function colorpickHandler(){
 	const newColor = document.getElementById("color").value
 	COLOR = hexToRGB(newColor)
 	
-	alert("!")
+	// alert("!")
 	const selectingCheckbox = document.getElementById("isSelecting")
 	if (selectingCheckbox.checked){
-		alert("checked")
+		// alert("checked")
 	} else{
-		alert("unchecked")
+		// alert("unchecked")
 	}
 }
 
@@ -360,6 +406,8 @@ function selectedItemHandler(){
 		let selectedObject = null
 		for (let i = 0; i<DRAWN.OBJECT.length; i++){
 			drawnObjectVertexCounter += DRAWN.OBJECT[i].count
+			// alert()
+			console.log("*******", drawnObjectVertexCounter)
 			if (drawnObjectVertexCounter > selectedVertex){
 				selectedObject = DRAWN.OBJECT[i]
 				index = String(i)
@@ -870,7 +918,7 @@ function findxy(res, e) {
 				// console.log(movedVerticeIndex)
 				const selectingActive = document.getElementById("isSelecting")
 				if (selectingActive.checked){
-					alert("selecting item")
+					// alert("selecting item")
 					selectedItemHandler()
 				}else{
 					console.log("+++++")
