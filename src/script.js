@@ -71,8 +71,11 @@ const setWidth = (e) => {
 function changeWidth(scales){
 	console.log("change width")
 	if (SELECTED_ITEM != null){
-		console.log(SELECTED_ITEM)
 		let idx = 0
+		console.log("|\n|\n|\nSEL ITEM id",SELECTED_ITEM.id)
+		DRAWN.OBJECT.forEach(obj => {
+			console.log("OBJ id:", obj.id)
+		});
 		for (let i = 0; i<DRAWN.OBJECT.length; i++){
 			if (SELECTED_ITEM.id == DRAWN.OBJECT[i].id){
 				idx = i
@@ -83,7 +86,7 @@ function changeWidth(scales){
 		// alert("INININ")
 		if (DRAWN.OBJECT[idx].type == "square"){
 			// alert("TYPE TRUE")
-			const firstVertexIndex = 0
+			let firstVertexIndex = 0
 			for (let i=0; i<idx; i++){
 				firstVertexIndex += DRAWN.OBJECT[i].count * 3
 			}
