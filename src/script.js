@@ -913,6 +913,20 @@ function draw()
 
 		// drawing object
 		let drawingType = gl.LINE_LOOP, startIndex=0, count = DRAWN.VERTICES.length/3
+		switch (DRAWN.OBJECT[i].type) {
+			case "line":
+				drawingType = gl.LINES
+				break;
+			case "square":
+				drawingType = gl.TRIANGLE_FAN
+				break;
+			case "rectangle":
+				drawingType = gl.TRIANGLE_FAN
+				break;
+			case "polygon":
+				drawingType = gl.LINE_LOOP
+				break;
+		}
 		startIndex = DRAWN.OBJECT[i].start_idx/3
 		count = DRAWN.OBJECT[i].count
 		console.log(startIndex, count, DRAWN.VERTICES.length)
@@ -1036,10 +1050,16 @@ function render(data) {
 
 		gl.compileShader( vertShader );
 
+		const objectColor = DRAWN.OBJECT[index].color;
+		console.log(">>",objectColor)
 		var fragCode = 
-			`void main(void){
-				gl_FragColor = vec4${data.OBJECT[index].color};
-			}`;
+        `void main(void){
+            gl_FragColor = vec4(${objectColor[0]},${objectColor[1]},${objectColor[2]},${objectColor[3]});
+        }`;
+		// var fragCode = 
+		// 	`void main(void){
+		// 		gl_FragColor = vec4${data.OBJECT[index].color};
+		// 	}`;
 			
 
 		var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
@@ -1088,5 +1108,6 @@ function render(data) {
 
 	console.log("YG PLG BAWAH")
 	console.log(DRAWN)
+	draw()
 }
 
