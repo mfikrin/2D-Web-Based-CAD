@@ -563,8 +563,20 @@ function init(){
 		findxy('out', e)
 	}, false);
 
+	const getColor = (hex) => {
+		const [_, rgb] = hex.split("#");
+		const red = parseInt(rgb.slice(0, 2), 16);
+		const green = parseInt(rgb.slice(2, 4), 16);
+		const blue = parseInt(rgb.slice(4, 6), 16);
+		const alpha = 1;
+		COLOR = `(${red}, ${green}, ${blue}, ${alpha})`;
+	};
+
 	var widthSlider = document.getElementById("width");
 	widthSlider.addEventListener("change", (e) => setWidth(e));
+
+	var m = document.getElementById("color");
+  	m.addEventListener("change", (e) => getColor(e.target.value));
 }
 
 function getVerticePosition(canvasPositionX, canvasPositionY){
@@ -676,70 +688,7 @@ function draw()
 
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
-	var vertices = DRAWN.VERTICES
-
-	var vertex_buffer = gl.createBuffer( );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
-	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, null );
-
-	var vertCode = 
-		'attribute vec3 coordinates;' +
-		'void main(void)' +
-		'{' +
-			' gl_Position = vec4(coordinates, 1.0);' +
-		'}';
-
-	var vertShader = gl.createShader( gl.VERTEX_SHADER );
-
-	gl.shaderSource( vertShader, vertCode );
-
-	gl.compileShader( vertShader );
-
-
-	// const frag = `precision mediump float;
-    
-    // uniform vec4 u_fragColor;
-    // void main() {
-    //   gl_FragColor = u_fragColor;
-    // }`
-
-	var fragCode = 
-        `void main(void){
-            gl_FragColor = vec4${COLOR};
-        }`;
-		// 'void main(void)' +
-		// '{' +
-		// 	' gl_FragColor = vec4' + COLOR +
-		// '}';
-		
-
-	var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
-
-	gl.shaderSource( fragShader, fragCode );
-
-	gl.compileShader( fragShader );
-
-	var shaderProgram = gl.createProgram( );
-
-	gl.attachShader( shaderProgram, vertShader );
-
-	gl.attachShader( shaderProgram, fragShader );
-
-	gl.linkProgram( shaderProgram );
-
-	gl.useProgram( shaderProgram );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
-	var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
-
-	gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
-
-	gl.enableVertexAttribArray( coord );
+	var vertices = DRAWN.VERTICES;
 
 	gl.clearColor( 0.0, 0.0, 0.0, .25 );
 
@@ -764,6 +713,69 @@ function draw()
 
 		var bool = ((drawn.OBJECT[index].type) === "line")
 		console.log(bool)
+
+		var vertex_buffer = gl.createBuffer( );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+		gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+		var vertCode = 
+			'attribute vec3 coordinates;' +
+			'void main(void)' +
+			'{' +
+				' gl_Position = vec4(coordinates, 1.0);' +
+			'}';
+
+		var vertShader = gl.createShader( gl.VERTEX_SHADER );
+
+		gl.shaderSource( vertShader, vertCode );
+
+		gl.compileShader( vertShader );
+
+
+		// const frag = `precision mediump float;
+		
+		// uniform vec4 u_fragColor;
+		// void main() {
+		//   gl_FragColor = u_fragColor;
+		// }`
+
+		var fragCode = 
+			`void main(void){
+				gl_FragColor = vec4${drawn.OBJECT[index].color};
+			}`;
+			// 'void main(void)' +
+			// '{' +
+			// 	' gl_FragColor = vec4' + COLOR +
+			// '}';
+			
+
+		var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
+
+		gl.shaderSource( fragShader, fragCode );
+
+		gl.compileShader( fragShader );
+
+		var shaderProgram = gl.createProgram( );
+
+		gl.attachShader( shaderProgram, vertShader );
+
+		gl.attachShader( shaderProgram, fragShader );
+
+		gl.linkProgram( shaderProgram );
+
+		gl.useProgram( shaderProgram );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+		var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
+
+		gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
+
+		gl.enableVertexAttribArray( coord );
 
 		switch (drawn.OBJECT[index].type) {
 			case "line":
