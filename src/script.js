@@ -833,6 +833,7 @@ function loadFile() {
         DRAWN = JSON.parse(e.target.result)
 		console.log("onloadddd")
         console.log(DRAWN)
+		console.log(DRAWN.OBJECT)
 
 		// draw()
 		render(DRAWN)
@@ -841,7 +842,7 @@ function loadFile() {
     reader.readAsText(file);
 }
 
-function render(data){
+function render(data) {
 	const gl = canvas.getContext( "webgl" );
 
 	FLAG_UPLOAD = true
@@ -856,69 +857,6 @@ function render(data){
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	var vertices = data.VERTICES
-
-	var vertex_buffer = gl.createBuffer( );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
-	gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, null );
-
-	var vertCode = 
-		'attribute vec3 coordinates;' +
-		'void main(void)' +
-		'{' +
-			' gl_Position = vec4(coordinates, 1.0);' +
-		'}';
-
-	var vertShader = gl.createShader( gl.VERTEX_SHADER );
-
-	gl.shaderSource( vertShader, vertCode );
-
-	gl.compileShader( vertShader );
-
-
-	// const frag = `precision mediump float;
-    
-    // uniform vec4 u_fragColor;
-    // void main() {
-    //   gl_FragColor = u_fragColor;
-    // }`
-
-	var fragCode = 
-        `void main(void){
-            gl_FragColor = vec4${data.OBJECT[0].color};
-        }`;
-		// 'void main(void)' +
-		// '{' +
-		// 	' gl_FragColor = vec4' + COLOR +
-		// '}';
-		
-
-	var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
-
-	gl.shaderSource( fragShader, fragCode );
-
-	gl.compileShader( fragShader );
-
-	var shaderProgram = gl.createProgram( );
-
-	gl.attachShader( shaderProgram, vertShader );
-
-	gl.attachShader( shaderProgram, fragShader );
-
-	gl.linkProgram( shaderProgram );
-
-	gl.useProgram( shaderProgram );
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
-	var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
-
-	gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
-
-	gl.enableVertexAttribArray( coord );
 
 	gl.clearColor( 0.0, 0.0, 0.0, .25 );
 
@@ -943,6 +881,57 @@ function render(data){
 
 		var bool = ((drawn.OBJECT[index].type) == "line")
 		console.log(bool)
+
+		var vertex_buffer = gl.createBuffer( );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+		gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, null );
+
+		var vertCode = 
+			'attribute vec3 coordinates;' +
+			'void main(void)' +
+			'{' +
+				' gl_Position = vec4(coordinates, 1.0);' +
+			'}';
+
+		var vertShader = gl.createShader( gl.VERTEX_SHADER );
+
+		gl.shaderSource( vertShader, vertCode );
+
+		gl.compileShader( vertShader );
+
+		var fragCode = 
+			`void main(void){
+				gl_FragColor = vec4${data.OBJECT[index].color};
+			}`;
+			
+
+		var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
+
+		gl.shaderSource( fragShader, fragCode );
+
+		gl.compileShader( fragShader );
+
+		var shaderProgram = gl.createProgram( );
+
+		gl.attachShader( shaderProgram, vertShader );
+
+		gl.attachShader( shaderProgram, fragShader );
+
+		gl.linkProgram( shaderProgram );
+
+		gl.useProgram( shaderProgram );
+
+		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
+
+		var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
+
+		gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
+
+		gl.enableVertexAttribArray( coord );
 
 		switch (drawn.OBJECT[index].type) {
 			case "line":
