@@ -547,8 +547,8 @@ function onDrawStart(currX,currY){
 
 function init(){
 
-
-	
+	canvas.width = 550
+	canvas.height = 550
 
 	canvas.addEventListener("mousemove", function (e) {
 		findxy('move', e)
