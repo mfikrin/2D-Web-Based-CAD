@@ -1,5 +1,6 @@
 let MODE
 let COLOR
+let IS_DRAWING = false
 
 // let FLAG_UPLOAD = false
 // // let VERTICES
@@ -303,6 +304,21 @@ function line_btn(){
     
 }
 
+
+function poly_btn(){
+	const polygonNodes = document.getElementById("nodePolygon").value
+
+	// setting global variables
+	TYPE = "polygon"
+	COUNTER_POINT = 0
+	TEMP_POINT = []
+	COUNT = polygonNodes
+
+	// setting flag
+	IS_DRAWING = true
+}
+
+
 function onDrawStart(currX,currY){
 
 	console.log("ON_DRAW_START")
@@ -544,6 +560,52 @@ function onDrawStart(currX,currY){
 
 		}
 
+	}else if (TYPE == "polygon"){
+		
+		COUNTER_POINT += 1
+
+		// fetching data
+		const currentVertexPos = getVerticePosition(currX, currY)
+
+		// storing data
+		TEMP_POINT.push(currentVertexPos.x)	// x value
+		TEMP_POINT.push(currentVertexPos.y) // y value
+		TEMP_POINT.push(0)					// z value
+		
+		// checking {deleted on production}
+		console.assert(-1 <= currentVertexPos.x && currentVertexPos.x <= 1, "[!] INVALID x VALUE")
+		console.assert(-1 <= currentVertexPos.y && currentVertexPos.y <= 1, "[!] INVALID y VALUE")
+		
+		if (COUNTER_POINT == COUNT){
+			// storing temporary data
+			var currentObjectId
+			if (DRAWN.OBJECT.length == 0){
+				currentObjectId = 1
+			} else {
+				currentObjectId = Number(DRAWN.OBJECT[DRAWN.OBJECT.length-1].id) + 1
+			}
+			const currentDrawnObject = {
+				"id" : currentObjectId,
+				"type" : "polygon",
+				"start_idx" : DRAWN.VERTICES.length,
+				"count" : COUNT,
+				"color" : COLOR.substring(1,COLOR.length-1).split(",").map((el) => Number(el))
+			}
+
+			DRAWN.VERTICES = DRAWN.VERTICES.concat(TEMP_POINT)
+			DRAWN.OBJECT.push(currentDrawnObject)
+
+
+			// reset global vars and flags
+			TYPE = ""
+			COUNTER_POINT = 0
+			TEMP_POINT = []
+			COUNT = 0
+			IS_DRAWING = false
+
+			// drawing objects
+			draw()
+		}
 	}
 }
 	
@@ -647,7 +709,14 @@ function findxy(res, e) {
 			// ctx.fillRect(currX, currY, y,y);
 			// ctx.closePath();
 			console.log("KK CLICK",currX,currY);
-			movedVerticeIndex = getMovedVerticeIndex(currX, currY)
+
+			// if not drawing, "grab vertice" enabled
+			if (IS_DRAWING == false){
+				movedVerticeIndex = getMovedVerticeIndex(currX, currY)
+			} else {
+				console.log("IS DRAWING")
+			} 
+			
 			if (movedVerticeIndex != null){
 				// console.log(movedVerticeIndex)
 				console.log("+++++")
@@ -684,6 +753,11 @@ function findxy(res, e) {
 function draw()
 {
     
+	console.log(".......\nDRAWING\n.......")
+
+
+
+
 	const gl = canvas.getContext( "webgl" );
 
 	if ( !gl )
@@ -693,9 +767,9 @@ function draw()
 		return;
 	}
 
-	gl.clear(gl.COLOR_BUFFER_BIT);
+	console.log("VERTICES: ", DRAWN.VERTICES)
 
-	var vertices = DRAWN.VERTICES;
+	var vertices = DRAWN.VERTICES
 
 	gl.clearColor( 0.0, 0.0, 0.0, .25 );
 
@@ -705,100 +779,65 @@ function draw()
 
 	gl.viewport( 0, 0, canvas.width, canvas.height );
 
-	var drawn = DRAWN
 
-	console.log("HMMM")
+	// drawing objects
+	for (let i = 0; i<DRAWN.OBJECT.length; i++){
 
-	console.log(drawn)
-	console.log(drawn.OBJECT)
-	console.log(drawn.OBJECT.length)
-
-	console.log("BANYAK OBJECT", drawn.OBJECT.length)
-	for (let index = 0; index < drawn.OBJECT.length; index++) {
-		console.log("type")
-		console.log(drawn.OBJECT[index].type)
-
-		var bool = ((drawn.OBJECT[index].type) === "line")
-		console.log(bool)
-
+		// SETTING UP SHADER
 		var vertex_buffer = gl.createBuffer( );
-
 		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
 		gl.bufferData( gl.ARRAY_BUFFER, new Float32Array( vertices ), gl.STATIC_DRAW );
-
 		gl.bindBuffer( gl.ARRAY_BUFFER, null );
-
 		var vertCode = 
 			'attribute vec3 coordinates;' +
 			'void main(void)' +
 			'{' +
 				' gl_Position = vec4(coordinates, 1.0);' +
 			'}';
-
 		var vertShader = gl.createShader( gl.VERTEX_SHADER );
-
 		gl.shaderSource( vertShader, vertCode );
-
 		gl.compileShader( vertShader );
-
-
-		// const frag = `precision mediump float;
-		
-		// uniform vec4 u_fragColor;
-		// void main() {
-		//   gl_FragColor = u_fragColor;
-		// }`
-
+		const objectColor = DRAWN.OBJECT[i].color;
+		console.log(">>",objectColor)
 		var fragCode = 
-			`void main(void){
-				gl_FragColor = vec4${drawn.OBJECT[index].color};
-			}`;
-			// 'void main(void)' +
-			// '{' +
-			// 	' gl_FragColor = vec4' + COLOR +
-			// '}';
-			
-
+        `void main(void){
+            gl_FragColor = vec4(${objectColor[0]},${objectColor[1]},${objectColor[2]},${objectColor[3]});
+        }`;
 		var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
-
 		gl.shaderSource( fragShader, fragCode );
-
 		gl.compileShader( fragShader );
-
 		var shaderProgram = gl.createProgram( );
-
 		gl.attachShader( shaderProgram, vertShader );
-
 		gl.attachShader( shaderProgram, fragShader );
-
 		gl.linkProgram( shaderProgram );
-
 		gl.useProgram( shaderProgram );
-
 		gl.bindBuffer( gl.ARRAY_BUFFER, vertex_buffer );
-
 		var coord = gl.getAttribLocation( shaderProgram, "coordinates" );
-
 		gl.vertexAttribPointer( coord, 3, gl.FLOAT, false, 0, 0 );
-
 		gl.enableVertexAttribArray( coord );
+	
 
-		switch (drawn.OBJECT[index].type) {
-			case "line":
-				console.log("MASUK LINE")
-				gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
-				break;
-			case "square":
-				console.log("MASUK SQR")
-				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
-				break;
-			case "rectangle":
-				console.log("MASUK RTL")
-				gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
-				break;
-		}
+		// drawing object
+		let drawingType = gl.LINE_LOOP, startIndex=0, count = DRAWN.VERTICES.length/3
+		startIndex = DRAWN.OBJECT[i].start_idx/3
+		count = DRAWN.OBJECT[i].count
+		console.log(startIndex, count, DRAWN.VERTICES.length)
+		gl.drawArrays( drawingType, startIndex, count);
 	}
+	// switch (drawn.OBJECT[index].type) {
+	// 	case "line":
+	// 		console.log("MASUK LINE")
+	// 		gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
+	// 		break;
+	// 	case "square":
+	// 		console.log("MASUK SQR")
+	// 		gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
+	// 		break;
+	// 	case "rectangle":
+	// 		console.log("MASUK RTL")
+	// 		gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
+	// 		break;
+	// }
 }
 
 function saveFile(){
