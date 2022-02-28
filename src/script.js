@@ -393,7 +393,7 @@ function onDrawStart(currX,currY){
 			TEMP_POINT.push(0)					// z value	
 		} else {
 			TEMP_POINT.push(Math.min(currentVertexPos.x, TEMP_POINT[0]+Math.abs(currentVertexPos.y-TEMP_POINT[1])))	// x value
-			TEMP_POINT.push(Math.min(currentVertexPos.y, TEMP_POINT[1]+Math.abs(currentVertexPos.x-TEMP_POINT[0]))) // y value
+			TEMP_POINT.push(Math.max(currentVertexPos.y, TEMP_POINT[1]-Math.abs(currentVertexPos.x-TEMP_POINT[0]))) // y value		
 			TEMP_POINT.push(0)																						// z value	
 		}
 		
