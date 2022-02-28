@@ -2,20 +2,6 @@ let MODE
 let COLOR
 let IS_DRAWING = false
 let SELECTED_ITEM = null
-// let FLAG_UPLOAD = false
-// // let VERTICES
-// if (!FLAG_UPLOAD){
-// 	VERTICES = []
-// }
-
-
-// let FLAG_UPLOAD = false
-// // let VERTICES
-// if (!FLAG_UPLOAD){
-// 	VERTICES = []
-// }
-
-// VERTICES = []
 
 let DRAWN =
 
@@ -119,182 +105,6 @@ function changeWidth(scales){
 			}
 
 			draw()			
-
-
-
-			// // var distanceX = Math.abs(DRAWN.pivotPoint.x - otherPoint.x)
-			// // var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
-	
-			// console.log("lg di change widthh")
-			// // console.log("DistanceX Y",distanceX,distanceY)
-	
-			// // Ikutin yg lebih kecil
-	
-			// console.log("length",DRAWN.OBJECT[idx].sqr_length)
-			// console.log("length",DRAWN.OBJECT[idx].scale)
-	
-			// const lengthSquare = DRAWN.OBJECT[idx].sqr_length * DRAWN.OBJECT[idx].scale
-	
-			// console.log("lenth square after slider",lengthSquare)
-	
-			// var ARAH
-	
-			// // DRAWN.COUNT_SHAPE ++
-	
-			// // var info_obj = 
-			// // {
-			// // 	"id" : DRAWN.COUNT_SHAPE,
-			// // 	"type" : TYPE,
-			// // 	"start_idx" : START_IDX,
-			// // 	"count" : COUNT,
-			// // 	"color" : COLOR,
-			// // 	"scale" : 1,
-			// // 	"pivot_point" : pivotPoint,
-			// // 	"sqr_length" : lengthSquare,
-			// // }
-	
-			// DRAWN.OBJECT[idx].sqr_length = lengthSquare
-	
-			// // DRAWN.OBJECT.push(info_obj)
-	
-			// // REFER -> INDEKS
-			// // let VERTICES = [
-			// // 	-0.5,-0.5,0, // 0
-			// // 	-0.5,0.5,0, // 1
-			// // 	0.5,-0.5,0, // 2
-			// // 	0.5,0.5,0, // 3			
-			// // ];
-			// if (DRAWN.OBJECT[0].pivotPoint.x < DRAWN.OBJECT[0].otherPoint.x){
-			// 	ARAH = "KANAN"
-	
-			// 	if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
-			// 		ARAH += "ATAS" // INDEKS 0
-			// 		// DRAWN.VERTICES = []
-	
-			// 		console.log("BEFORE",DRAWN.VERTICES)
-	
-			// 		const temp_arr = [
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
-			// 		]
-	
-			// 		let iter = 0
-			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-			// 			iter++
-			// 		}
-	
-			// 		console.log("AFTER",DRAWN.VERTICES)
-	
-			// 		// DRAWN.VERTICES.push(
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y+lengthSquare, 0, // 3
-			// 		// )
-			// 		// DRAWN.VERTICES = VERTICES
-			// 		draw()
-			// 	}else{
-			// 		ARAH += "BAWAH" // INDEKS 1
-			// 		// DRAWN.VERTICES = []
-			// 		// DRAWN.VERTICES.push(
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-			// 		// )
-			// 		console.log("BEFORE",DRAWN.VERTICES)
-			// 		const temp_arr = [
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-			// 			DRAWN.OBJECT[0].pivotPoint.x+lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-			// 		]
-	
-			// 		let iter = 0
-			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-			// 			iter++
-			// 		}
-			// 		console.log("AFTER",DRAWN.VERTICES)
-			// 		// DRAWN.VERTICES = VERTICES
-			// 		draw()
-			// 	}
-			// }else{
-			// 	ARAH = "KIRI"
-			// 	if (DRAWN.OBJECT[0].pivotPoint.y < DRAWN.OBJECT[0].otherPoint.y){
-			// 		ARAH += "ATAS" // INDEKS 2
-			// 		// DRAWN.VERTICES = []
-			// 		// DRAWN.VERTICES.push(
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
-			// 		// )
-			// 		// DRAWN.VERTICES = VERTICES
-			// 		console.log("BEFORE",DRAWN.VERTICES)
-	
-			// 		const temp_arr = [
-			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 0
-			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 1
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 2
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y + lengthSquare, 0, // 3
-			// 		]
-	
-			// 		let iter = 0
-			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-			// 			iter++
-			// 		}
-	
-			// 		console.log("AFTER",DRAWN.VERTICES)
-	
-			// 		draw()
-			// 	}else{
-			// 		ARAH += "BAWAH" // INDEKS 3
-			// 		// DRAWN.VERTICES = []
-			// 		// DRAWN.VERTICES.push(
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-			// 		// 	DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-			// 		// )
-			// 		// DRAWN.VERTICES = VERTICES
-	
-			// 		console.log("BEFORE",DRAWN.VERTICES)
-			// 		const temp_arr = [
-			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 0
-			// 			DRAWN.OBJECT[0].pivotPoint.x - lengthSquare, DRAWN.OBJECT[0].pivotPoint.y, 0, // 1
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y - lengthSquare, 0, // 2
-			// 			DRAWN.OBJECT[0].pivotPoint.x, DRAWN.OBJECT[0].pivotPoint.y, 0, // 3
-			// 		]
-	
-			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
-			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
-			// 		console.log("start idx",DRAWN.OBJECT[0].start_idx)
-	
-			// 		let iter = 0
-			// 		for (let index = DRAWN.OBJECT[0].start_idx; index < DRAWN.OBJECT[0].start_idx + DRAWN.OBJECT[0].count * 3 ; index++) {
-			// 			DRAWN.VERTICES.splice(index, 1, temp_arr[iter]);
-			// 			iter++
-			// 		}
-	
-			// 		console.log("AFTER",DRAWN.VERTICES)
-	
-			// 		draw()
-			// 	}
-			// }
-	
-			// console.log(ARAH)
-	
-			// console.log("DRAWNN")
-			// console.log(DRAWN)
-	
-	
-	
-		// render(DRAWN)
 		}
 	}
 	
@@ -505,117 +315,7 @@ function onDrawStart(currX,currY){
 			// drawing objects
 			draw()
 		}
-		// console.log("posisi",COUNTER_POINT,currX,currY)
-		// var vertex_position = getVerticePosition(currX,currY)		
-		// console.log(vertex_position)
-		// TEMP_POINT.push([vertex_position.x,vertex_position.y])
-		// COUNTER_POINT += 1
-		// console.log(TEMP_POINT)
-
-		// // TEMP_POINT = [[x1,y1],[x2,y2]]
-
-		// if (COUNTER_POINT == 2){
-		// 	// cari panjang persegi
-		// 	// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
-
-		// 	// pivot point = titik pertama yg diclick user
-		// 	console.log("WOI")
-		// 	console.log(TEMP_POINT)
-
-			
-
-		// 	const pivotPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
-		// 	const otherPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
-			
-		// 	var distanceX = Math.abs(pivotPoint.x - otherPoint.x)
-		// 	var distanceY = Math.abs(pivotPoint.y - otherPoint.y)
-
-		// 	console.log("DistanceX Y",distanceX,distanceY)
-
-		// 	// Ikutin yg lebih kecil
-
-		// 	const lengthSquare = Math.min(distanceX,distanceY)
-		// 	console.log("lenth square before slider",lengthSquare)
-
-		// 	var ARAH
-
-		// 	DRAWN.COUNT_SHAPE ++
-
-		// 	var info_obj = 
-		// 	{
-		// 		"id" : DRAWN.COUNT_SHAPE,
-		// 		"type" : TYPE,
-		// 		"start_idx" : START_IDX,
-		// 		"count" : COUNT,
-		// 		"color" : COLOR,
-		// 		"scale" : SCALE,
-		// 		"pivotPoint" : pivotPoint,
-		// 		"otherPoint" : otherPoint,
-		// 		"sqr_length" : lengthSquare,
-		// 	}
-		// 	DRAWN.OBJECT.push(info_obj)
-
-		// 	// REFER -> INDEKS
-		// 	// let VERTICES = [
-		// 	// 	-0.5,-0.5,0, // 0
-		// 	// 	-0.5,0.5,0, // 1
-		// 	// 	0.5,-0.5,0, // 2
-		// 	// 	0.5,0.5,0, // 3			
-		// 	// ];
-		// 	if (pivotPoint.x < otherPoint.x){
-		// 		ARAH = "KANAN"
-
-		// 		if (pivotPoint.y < otherPoint.y){
-		// 			ARAH += "ATAS" // INDEKS 0
-		// 			DRAWN.VERTICES.push(
-		// 				pivotPoint.x, pivotPoint.y, 0, // 0
-		// 				pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
-		// 				pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
-		// 				pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
-		// 			)
-		// 			// DRAWN.VERTICES = VERTICES
-		// 			draw()
-		// 		}else{
-		// 			ARAH += "BAWAH" // INDEKS 1
-		// 			DRAWN.VERTICES.push(
-		// 				pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
-		// 				pivotPoint.x, pivotPoint.y, 0, // 1
-		// 				pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
-		// 				pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
-		// 			)
-		// 			// DRAWN.VERTICES = VERTICES
-		// 			draw()
-		// 		}
-		// 	}else{
-		// 		ARAH = "KIRI"
-		// 		if (pivotPoint.y < otherPoint.y){
-		// 			ARAH += "ATAS" // INDEKS 2
-		// 			DRAWN.VERTICES.push(
-		// 				pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
-		// 				pivotPoint.x - lengthSquare, pivotPoint.y + lengthSquare, 0, // 1
-		// 				pivotPoint.x, pivotPoint.y, 0, // 2
-		// 				pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 3
-		// 			)
-		// 			// DRAWN.VERTICES = VERTICES
-		// 			draw()
-		// 		}else{
-		// 			ARAH += "BAWAH" // INDEKS 3
-		// 			DRAWN.VERTICES.push(
-		// 				pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
-		// 				pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
-		// 				pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
-		// 				pivotPoint.x, pivotPoint.y, 0, // 3
-		// 			)
-		// 			// DRAWN.VERTICES = VERTICES
-		// 			draw()
-		// 		}
-		// 	}
-
-		// 	console.log(ARAH)
-
-		// 	console.log("DRAWNN")
-		// 	console.log(DRAWN)
-		// }
+		
 	}else if (TYPE == "rectangle"){		
 		COUNTER_POINT += 1
 
@@ -909,10 +609,6 @@ function findxy(res, e) {
 		flag = true;
 		dot_flag = true;
 		if (dot_flag) {
-			// ctx.beginPath();
-			// ctx.fillStyle = x;
-			// ctx.fillRect(currX, currY, y,y);
-			// ctx.closePath();
 			console.log("KK CLICK",currX,currY);
 
 			// if not drawing, "grab vertice" enabled
@@ -1049,20 +745,6 @@ function draw()
 		console.log(startIndex, count, DRAWN.VERTICES.length)
 		gl.drawArrays( drawingType, startIndex, count);
 	}
-	// switch (drawn.OBJECT[index].type) {
-	// 	case "line":
-	// 		console.log("MASUK LINE")
-	// 		gl.drawArrays( gl.LINES, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count);
-	// 		break;
-	// 	case "square":
-	// 		console.log("MASUK SQR")
-	// 		gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
-	// 		break;
-	// 	case "rectangle":
-	// 		console.log("MASUK RTL")
-	// 		gl.drawArrays( gl.TRIANGLE_STRIP, drawn.OBJECT[index].start_idx, drawn.OBJECT[index].count );
-	// 		break;
-	// }
 }
 
 function saveFile(){
@@ -1173,10 +855,6 @@ function render(data) {
         `void main(void){
             gl_FragColor = vec4(${objectColor[0]},${objectColor[1]},${objectColor[2]},${objectColor[3]});
         }`;
-		// var fragCode = 
-		// 	`void main(void){
-		// 		gl_FragColor = vec4${data.OBJECT[index].color};
-		// 	}`;
 			
 
 		var fragShader = gl.createShader( gl.FRAGMENT_SHADER );
