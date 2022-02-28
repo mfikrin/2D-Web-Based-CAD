@@ -42,7 +42,7 @@ var x = "black",
 	y = 8;
 
 init()
-COLOR = "(0,0,0,0.5)"
+COLOR = "(0.0,0.0,0.0,1.0)"
 draw()
 
 // let COUNT_SHAPE = 0
@@ -564,12 +564,14 @@ function init(){
 	}, false);
 
 	const getColor = (hex) => {
+		console.log(hex);
 		const [_, rgb] = hex.split("#");
 		const red = parseInt(rgb.slice(0, 2), 16);
 		const green = parseInt(rgb.slice(2, 4), 16);
 		const blue = parseInt(rgb.slice(4, 6), 16);
 		const alpha = 1;
-		COLOR = `(${red}, ${green}, ${blue}, ${alpha})`;
+		COLOR = `(${red/255}, ${green/255}, ${blue/255}, ${alpha})`;
+		console.log(COLOR);
 	};
 
 	var widthSlider = document.getElementById("width");
