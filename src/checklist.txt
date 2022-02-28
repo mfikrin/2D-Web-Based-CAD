@@ -6,10 +6,11 @@ YANG BISA DI-UPDATE:
 [v] move vertice
 
 DAFFA
-[ ] refaktor fungsi draw()  {kayak referensi di bawah}
-[ ] set color
+[v] refaktor fungsi draw()  {kayak referensi di bawah}
+[v] set color
+[ ] change color
 // tambahin data (VERTICES dan DRAWN_SHAPE), penggil fungsi draw(), termasuk mouseclick nya
-[.] draw line
+[v] draw line
 
 NAUFAL
 [ ] draw polygon masih ada bug.
@@ -17,9 +18,9 @@ alternatif solusi: sort dulu berdasarkan sumbu x (minimal pakai TRIANGLE_STRIP. 
 [ ] draw rectangle
 
 SAVE LOAD
-[ ] draw square
-[ ] save
-[ ] load
+[v] draw square
+[v] save
+[v] load
 
 
 SEMENTARA:

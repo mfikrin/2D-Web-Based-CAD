@@ -250,6 +250,13 @@ function changeWidth(scales){
 	
 }
 
+function changeColor() {
+	if (DRAWN.OBJECT.length != 0) {
+		DRAWN.OBJECT[0].color = COLOR;
+		draw();
+	}
+}
+
 function clr_btn(){
 	console.log("uyy clear")
 	DRAWN.VERTICES = []
@@ -278,8 +285,6 @@ function rec_btn(){
 	COUNT = 4
 	var last_idx = (DRAWN.VERTICES.length / 3) - 1
 	START_IDX = last_idx + 1
-
-    
 }
 
 function line_btn(){
