@@ -250,7 +250,15 @@ function changeWidth(scales){
 	
 }
 
+function clr_btn(){
+	console.log("uyy clear")
+	DRAWN.VERTICES = []
+	DRAWN.OBJECT = []
+	DRAWN.COUNT_SHAPE = 0
 
+	console.log(DRAWN)
+	draw()
+}
 
 function sqr_btn(){
 	alert('Klik 2 titik')
