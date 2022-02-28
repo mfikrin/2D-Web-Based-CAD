@@ -51,12 +51,13 @@
             <div>
               <label class="form-object">Selected Item :</label> 
               <div class="item-select" id="Selected-item">None</div>
-              
+              <input type="checkbox" id="isSelecting" name="isSelecting" value="false">
+              <label for="isSelecting"> Selecting?</label><br>
             </div>
 
             <div>
               <label class="form-object">Choose color</label>
-              <input type="color" class="form-control" id="color" />
+              <input type="color" class="form-control" id="color" value="#000000" onchange="colorpickHandler()"/>
             </div>
 
             <div class="tool"><button class="tool_btn" id="color-change" , onclick="changeColor()">Change Color</button></div>

@@ -1,7 +1,7 @@
 let MODE
 let COLOR
 let IS_DRAWING = false
-
+let SELECTED_ITEM = null
 // let FLAG_UPLOAD = false
 // // let VERTICES
 // if (!FLAG_UPLOAD){
@@ -252,9 +252,16 @@ function changeWidth(scales){
 }
 
 function changeColor() {
-	if (DRAWN.OBJECT.length != 0) {
-		DRAWN.OBJECT[0].color = COLOR;
-		draw();
+	if (SELECTED_ITEM != null){
+		console.log(SELECTED_ITEM.id)
+		for (let i = 0; i<DRAWN.OBJECT.length; i++){
+			if (DRAWN.OBJECT[i].id == SELECTED_ITEM.id){
+				console.log(DRAWN.OBJECT[i].color, "<-", COLOR)
+				DRAWN.OBJECT[i].color = COLOR.substring(1,COLOR.length-1).split(",").map((el) => Number(el));
+				draw();
+				break;
+			}
+		}
 	}
 }
 
@@ -320,6 +327,54 @@ function poly_btn(){
 	// setting flag
 	IS_DRAWING = true
 }
+
+
+function colorpickHandler(){
+	function hexToRGB(hex, alpha=1) {
+		var r = parseInt(hex.slice(1, 3), 16)/255,
+			g = parseInt(hex.slice(3, 5), 16)/255,
+			b = parseInt(hex.slice(5, 7), 16)/255;
+	
+		return `(${r},${g},${b},${alpha})`;
+	}
+	const newColor = document.getElementById("color").value
+	COLOR = hexToRGB(newColor)
+	
+	alert("!")
+	const selectingCheckbox = document.getElementById("isSelecting")
+	if (selectingCheckbox.checked){
+		alert("checked")
+	} else{
+		alert("unchecked")
+	}
+}
+
+
+function selectedItemHandler(){
+	const selectedItemComponent = document.getElementById("Selected-item")
+	const selectedVertex = getMovedVerticeIndex(currX, currY, 5)
+	SELECTED_ITEM = null
+	let index = ""
+	if (selectedVertex != null){
+		let drawnObjectVertexCounter = 0
+		let selectedObject = null
+		for (let i = 0; i<DRAWN.OBJECT.length; i++){
+			drawnObjectVertexCounter += DRAWN.OBJECT[i].count
+			if (drawnObjectVertexCounter > selectedVertex){
+				selectedObject = DRAWN.OBJECT[i]
+				index = String(i)
+				break
+			}
+		}
+		SELECTED_ITEM = selectedObject
+	}
+	if (SELECTED_ITEM == null){
+		selectedItemComponent.innerHTML = "None"
+	} else {
+		selectedItemComponent.innerHTML = `${SELECTED_ITEM.type} ${index}`				
+	}
+}
+
 
 
 function onDrawStart(currX,currY){
@@ -813,9 +868,15 @@ function findxy(res, e) {
 			
 			if (movedVerticeIndex != null){
 				// console.log(movedVerticeIndex)
-				console.log("+++++")
-				setVERTICE(movedVerticeIndex, currX, currY);
-				console.log("=====")
+				const selectingActive = document.getElementById("isSelecting")
+				if (selectingActive.checked){
+					alert("selecting item")
+					selectedItemHandler()
+				}else{
+					console.log("+++++")
+					setVERTICE(movedVerticeIndex, currX, currY);
+					console.log("=====")
+				}
 			}
 
 			onDrawStart(currX,currY)
