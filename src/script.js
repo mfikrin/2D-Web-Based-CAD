@@ -401,11 +401,16 @@ function selectedItemHandler(){
 	const selectedVertex = getMovedVerticeIndex(currX, currY, 5)
 	SELECTED_ITEM = null
 	let index = ""
+	console.log("SELECTED VERTEX",selectedVertex)
+	DRAWN.OBJECT.forEach(obj => {
+		console.log("COUNT", obj.count)
+	});
+	console.log(DRAWN.VERTICES[selectedVertex])
 	if (selectedVertex != null){
 		let drawnObjectVertexCounter = 0
 		let selectedObject = null
 		for (let i = 0; i<DRAWN.OBJECT.length; i++){
-			drawnObjectVertexCounter += DRAWN.OBJECT[i].count
+			drawnObjectVertexCounter += Number(DRAWN.OBJECT[i].count)
 			// alert()
 			console.log("*******", drawnObjectVertexCounter)
 			if (drawnObjectVertexCounter > selectedVertex){
