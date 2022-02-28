@@ -278,14 +278,17 @@ function sqr_btn(){
 	START_IDX = last_idx + 1  
 }
 
-function rec_btn(){
-	alert('Klik 2 titik')
+function rect_btn(){
+	alert('Klik 2 titik sudut yang berseberangan')
+
+	// setting global variables
 	TYPE = "rectangle"
 	COUNTER_POINT = 0
 	TEMP_POINT = []
-	COUNT = 4
-	var last_idx = (DRAWN.VERTICES.length / 3) - 1
-	START_IDX = last_idx + 1
+	COUNT = 2
+
+	// setting flag
+	IS_DRAWING = true   
 }
 
 function line_btn(){
@@ -435,91 +438,69 @@ function onDrawStart(currX,currY){
 			console.log("DRAWNN")
 			console.log(DRAWN)
 		}
-	}else if (TYPE == "rectangle"){
-		console.log("posisi",COUNTER_POINT,currX,currY)
-		var vertex_position = getVerticePosition(currX,currX)		
-		console.log(vertex_position)
-		TEMP_POINT.push([vertex_position.x,vertex_position.y])
+	}else if (TYPE == "rectangle"){		
 		COUNTER_POINT += 1
-		console.log(TEMP_POINT)
 
-		// TEMP_POINT = [[x1,y1],[x2,y2]]
+		// fetching data
+		const currentVertexPos = getVerticePosition(currX, currY)
 
-		if (COUNTER_POINT == 2){
-			// cari panjang persegi
-			// var hypotenuseSquare = Math.sqrt(Math.pow(TEMP_POINT[0][0]-TEMP_POINT[1][0],2) + Math.pow(TEMP_POINT[0][1]-TEMP_POINT[1][1],2) )
-
-			// pivot point = titik pertama yg diclick user
-			console.log("WOI")
-			console.log(TEMP_POINT)
-
-			const FirstPoint = {x : TEMP_POINT[0][0], y : TEMP_POINT[0][1]}
-			const SecondPoint = {x : TEMP_POINT[1][0], y : TEMP_POINT[1][1]}
-			
-			var distanceX = Math.abs(FirstPoint.x - SecondPoint.x)
-			var distanceY = Math.abs(FirstPoint.y - SecondPoint.y)
-
-			// Ikutin yg lebih kecil
-
-			// const lengthSquare = Math.min(distanceX,distanceY)
-
-			var ARAH
-
-
-			// REFER -> INDEKS
-			// let VERTICES = [
-			// 	-0.5,-0.5,0, // 0
-			// 	-0.5,0.5,0, // 1
-			// 	0.5,-0.5,0, // 2
-			// 	0.5,0.5,0, // 3			
-			// ];
-			if (pivotPoint.x < otherPoint.x){
-				ARAH = "KANAN"
-
-				if (pivotPoint.y < otherPoint.y){
-					ARAH += "ATAS" // INDEKS 0
-					DRAWN.VERTICES.push(
-						FirstPoint.x, FirstPoint.y, 0, // 0
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 1
-						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 2
-						pivotPoint.x+lengthSquare, pivotPoint.y+lengthSquare, 0, // 3
-					)
-					draw()
-				}else{
-					ARAH += "BAWAH" // INDEKS 1
-					DRAWN.VERTICES.push(
-						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 0
-						pivotPoint.x, pivotPoint.y, 0, // 1
-						pivotPoint.x+lengthSquare, pivotPoint.y - lengthSquare, 0, // 2
-						pivotPoint.x+lengthSquare, pivotPoint.y, 0, // 3
-					)
-					draw()
-				}
-			}else{
-				ARAH = "KIRI"
-				if (pivotPoint.y < otherPoint.y){
-					ARAH += "ATAS" // INDEKS 2
-					DRAWN.VERTICES.push(
-						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 0
-						pivotPoint.x, pivotPoint.y, 0, // 1
-						pivotPoint.x, pivotPoint.y + lengthSquare, 0, // 2
-						pivotPoint.x-lengthSquare, pivotPoint.y + lengthSquare, 0, // 3
-					)
-					draw()
-				}else{
-					ARAH += "BAWAH" // INDEKS 3
-					DRAWN.VERTICES.push(
-						pivotPoint.x - lengthSquare, pivotPoint.y - lengthSquare, 0, // 0
-						pivotPoint.x - lengthSquare, pivotPoint.y, 0, // 1
-						pivotPoint.x, pivotPoint.y - lengthSquare, 0, // 2
-						pivotPoint.x, pivotPoint.y, 0, // 3
-					)
-					draw()
-				}
+		// storing data
+		TEMP_POINT.push(currentVertexPos.x)	// x value
+		TEMP_POINT.push(currentVertexPos.y) // y value
+		TEMP_POINT.push(0)					// z value
+		
+		// checking {deleted on production}
+		console.assert(-1 <= currentVertexPos.x && currentVertexPos.x <= 1, "[!] INVALID x VALUE")
+		console.assert(-1 <= currentVertexPos.y && currentVertexPos.y <= 1, "[!] INVALID y VALUE")
+		
+		if (COUNTER_POINT == COUNT){
+			// storing temporary data
+			var currentObjectId
+			if (DRAWN.OBJECT.length == 0){
+				currentObjectId = 1
+			} else {
+				currentObjectId = Number(DRAWN.OBJECT[DRAWN.OBJECT.length-1].id) + 1
 			}
+			const currentDrawnObject = {
+				"id" : currentObjectId,
+				"type" : "rectangle",
+				"start_idx" : DRAWN.VERTICES.length,
+				"count" : 4,
+				"color" : COLOR.substring(1,COLOR.length-1).split(",").map((el) => Number(el))
+			}
+			// --- INFO ---
+			// acquired points: (a,b,z1) and (c,d,z2)
+			// ------------
+			// storing 1st node
+			DRAWN.VERTICES.push(TEMP_POINT[0]) // point a
+			DRAWN.VERTICES.push(TEMP_POINT[1]) // point b
+			DRAWN.VERTICES.push(TEMP_POINT[2]) // z1
+			// storing 2nd node
+			DRAWN.VERTICES.push(TEMP_POINT[0]) // point a
+			DRAWN.VERTICES.push(TEMP_POINT[4]) // point d
+			DRAWN.VERTICES.push(TEMP_POINT[2]) // z1
+			// storing 3rd node
+			DRAWN.VERTICES.push(TEMP_POINT[3]) // point c
+			DRAWN.VERTICES.push(TEMP_POINT[4]) // point d
+			DRAWN.VERTICES.push(TEMP_POINT[5]) // z2
+			// storing 4th node
+			DRAWN.VERTICES.push(TEMP_POINT[3]) // point c
+			DRAWN.VERTICES.push(TEMP_POINT[1]) // point b
+			DRAWN.VERTICES.push(TEMP_POINT[2]) // z2
+			// storing object info
+			DRAWN.OBJECT.push(currentDrawnObject)
 
-			console.log(ARAH)
-	}
+
+			// reset global vars and flags
+			TYPE = ""
+			COUNTER_POINT = 0
+			TEMP_POINT = []
+			COUNT = 0
+			IS_DRAWING = false
+
+			// drawing objects
+			draw()
+		}
 
 	}else if (TYPE == "line"){
 		console.log("posisi",COUNTER_POINT,currX,currY)
